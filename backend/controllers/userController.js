@@ -1,8 +1,11 @@
+const Test  = require("../models/userModel")
 
-function signup(req, res) {
+
+async function signupUser(req, res) {
     const { email, password } = req.body;
+    const user = await Test.signup(email, password);
 }
 
 module.exports = {
-    signup
+    signupUser
 };
