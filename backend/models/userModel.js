@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt')
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -16,12 +17,14 @@ userSchema.statics.signup = async function(email, password) {
         throw Error("Email or Password is missing!");
     }
     // check if email already exists
-    const fetchedEmail = await this.find({ email });
-    if (fetchedEmail) {
+    const emailExists = await this.findOne({ email });
+    if (emailExists) {
         throw Error("Email already exists!");
     }
-    return null;
-
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const user = await this.create({email, password: hashedPassword});
+    return user;
 }
 
 const User = mongoose.model('User', userSchema);
