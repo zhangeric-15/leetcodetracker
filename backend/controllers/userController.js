@@ -23,6 +23,19 @@ async function signupUser(req, res) {
     }
 }
 
+async function loginUser(req, res) {
+    const { email, password } = req.body;
+    try {
+        const user = await User.login(email, password);
+        const token = generateToken(user._id);
+        return res.status(200).json({email, token});
+    } catch(error) {
+        console.log("Error logging in user: ", error.meessage);
+        return res.status(401).json({error: error.message});
+    }
+}
+
 module.exports = {
-    signupUser
+    signupUser,
+    loginUser
 };
