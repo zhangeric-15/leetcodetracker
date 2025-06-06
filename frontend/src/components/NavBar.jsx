@@ -1,8 +1,10 @@
 function NavBar() {
     return (
-        <div>
-            <h1 id="NavBar">NavBar</h1>
-        </div>
+        <header>
+            <div>
+                <h1 id="NavBar">NavBar</h1>
+            </div>
+        </header>
     )
 }
 
