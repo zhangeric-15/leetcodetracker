@@ -1,8 +1,13 @@
+import { useState } from 'react'
+import {Button, ButtonGroup} from '@chakra-ui/react'
+
 function NavBar() {
+    const [name, setName] = useState("");
     return (
         <header>
-            <div>
-                <h1 id="NavBar">NavBar</h1>
+            <div class="NavBarContainer">
+                <h1>Leetcode Tracker</h1>
+                <Button size="xs" variant="solid" colorPalette="green">Sign Up</Button>
             </div>
         </header>
     )
