@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import {Button, ButtonGroup} from '@chakra-ui/react'
 
 
 function signUpClick() {
@@ -14,8 +13,8 @@ function NavBar() {
             <div className="NavBarContainer">
                 <h1>Leetcode Tracker</h1>
                 <div className="authenticationItems">
-                    <Button size="xs" variant="solid" colorPalette="blue">Login</Button>
-                    <Button size="xs" variant="solid" colorPalette="green" onClick={signUpClick}>Sign Up</Button>
+                    <button>Login</button>
+                    <button onClick={signUpClick}>Sign Up</button>
                 </div>
             </div>
         </header>
