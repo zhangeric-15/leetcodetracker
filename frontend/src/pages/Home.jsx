@@ -1,11 +1,13 @@
-
+import ProblemContent from '../components/ProblemContent';
 
 function Home() {
     return (
-        <div>
-            Leetcode Problems will be placed here
-        </div>
-    )
+        <>
+            <div className="allProblems">
+                <ProblemContent/>
+            </div>
+        </>
+    );
 }
 
 export default Home;

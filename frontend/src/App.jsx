@@ -4,9 +4,13 @@ import './App.css';
 // Import Components
 import Home from './pages/Home'
 import NavBar from './components/NavBar'
+import { useColorMode } from './components/ui/color-mode';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const { colorMode } = useColorMode();
+
+  console.log("Current Color Mode: ", colorMode);
 
   return (
     <>
