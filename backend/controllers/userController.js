@@ -2,6 +2,7 @@ const User  = require("../models/userModel")
 const jwt = require('jsonwebtoken')
 
 // paylod will be the user's _id property
+// TODO: RENAME PARAMETER
 function generateToken(payload) {
     const secretKey = process.env.JWT_SECRET_KEY;
     // set expiration date on token
