@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 
@@ -16,7 +16,9 @@ function NavBar() {
     return (
         <header>
             <div className="NavBarContainer">
-                <h1>Leetcode Tracker</h1>
+                <Link to="/">
+                    <h1>Leetcode Tracker</h1>
+                </Link>
                 <div className="authenticationButtons">
                     <button>Login</button>
                     <button onClick={signUpClick}>Sign Up</button>
