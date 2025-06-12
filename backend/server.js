@@ -4,8 +4,14 @@ const userRouter = require('./routes/userRoutes');
 const problemRouter = require('./routes/problemRoutes')
 require('dotenv').config();
 
+const cors = require('cors');
 const app = express();
 
+// Allow requests from your frontend origin
+app.use(cors({
+    origin: 'http://localhost:5173', // or use "*" to allow all (not recommended in prod)
+    credentials: true
+  }));
 app.use(express.json());
 
 app.use('/api/users', userRouter);

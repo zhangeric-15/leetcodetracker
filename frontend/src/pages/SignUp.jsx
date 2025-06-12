@@ -2,10 +2,27 @@ import { useState } from "react";
 function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         console.log(`Email: ${email} and Password: ${password} sent to backend`);
+
+        try {
+            const response = await fetch('http://localhost:5001/api/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = response.json();
+            if (!response.ok) {
+                setError(data.error);
+            }
+        } catch (error) {
+            console.log("ERROR Signing up: ", error);
+        }
     }
 
     return (
