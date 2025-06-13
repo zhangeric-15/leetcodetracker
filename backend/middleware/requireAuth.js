@@ -23,10 +23,14 @@ function requireAuthMiddleware(req, res, next) {
     }
     const token = authorization.split(" ")[1]
     try {
-        decodedPayload = jwt.verify(token, process.env.JWT_SECRET_KEY);
-        userId = decodedPayload.payload;
+        const { userId } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        if (!userId) {
+            throw Error("JWT verified, but unable to grab userId");
+        }
+        req.user = userId;
     } catch(error) {
         console.log("Error verifying signature of JWT");
+        return res.status(401).json({error})
     }
     next();
 }
