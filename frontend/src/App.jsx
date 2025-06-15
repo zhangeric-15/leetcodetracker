@@ -6,10 +6,11 @@ import NavBar from './components/NavBar'
 // Import Pages
 import Home from './pages/Home'
 import Signup from './pages/SignUp'
+import { useAuthContext } from '../hooks/useAuthContext';
 
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { user } = useAuthContext();
   return (
     <>
       <div>
@@ -17,7 +18,7 @@ function App() {
           <NavBar/>
           <Routes>
             <Route path="/" element={<Home/>} />
-            <Route path="/signup" element={<Signup/>} />
+            <Route path="/signup" element={!user ? <Signup/> : <Home/>} />
           </Routes>
         </BrowserRouter> 
       </div>
