@@ -35,8 +35,13 @@ header h1 {
   margin-top: 150px;
 }
 
-.authenticationButtons {
+.loginLogoutButtons {
   padding-top: 0px;
+}
+
+.userNavButtons {
+  display: flex;
+  gap: 12px;
 }
 
 .credentialsForm {

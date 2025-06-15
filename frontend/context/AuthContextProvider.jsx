@@ -8,7 +8,12 @@ function authReducer(state, action) {
         return {
             user: action.payload
         };
-    } else {
+    } else if (action.type == "LOGOUT") {
+        return {
+            user: null
+        };
+    } 
+    else {
         return state;
     }
 }
