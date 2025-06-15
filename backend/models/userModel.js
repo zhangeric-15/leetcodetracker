@@ -23,7 +23,7 @@ userSchema.statics.login = async function(email, password) {
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-        throw Error("Incorrect Password!");
+        throw Error("Incorrect Email or Password!");
     }
     return user;
 }

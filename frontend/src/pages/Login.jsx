@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
-function Signup() {
+function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -9,7 +9,7 @@ function Signup() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5001/api/users/signup', {
+            const response = await fetch('http://localhost:5001/api/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -18,18 +18,19 @@ function Signup() {
             });
             const data = await response.json();
             if (response.ok) {
-                dispatch({type: 'SIGNUP', payload: data});
+                dispatch({type: 'LOGIN', payload: data});
             } else if (!response.ok) {
+                console.log("Incorrect credentials for user login: ", data.error);
                 setError(data.error);
             }
         } catch (error) {
-            console.log("ERROR Signing up user. Error thrown: ", error);
+            console.log("ERROR Logging in user. Error thrown: ", error);
         }
     }
 
     return (
         <form className="credentialsForm" onSubmit={handleSubmit}>
-            <h2> Sign Up </h2>
+            <h2> Login </h2>
             <label>Email:</label>
             <input
              type="email"
@@ -51,4 +52,4 @@ function Signup() {
     )
 }
 
-export default Signup;
+export default Login;

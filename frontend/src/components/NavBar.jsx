@@ -12,6 +12,9 @@ function NavBar() {
         navigate("/signup")
     }
 
+    function loginClick() {
+        navigate("/login");
+    }
 
     return (
         <header>
@@ -20,7 +23,7 @@ function NavBar() {
                     <h1>Leetcode Tracker</h1>
                 </Link>
                 <div className="authenticationButtons">
-                    <button>Login</button>
+                    <button onClick={loginClick}>Login</button>
                     <button onClick={signUpClick}>Sign Up</button>
                 </div>
             </div>
