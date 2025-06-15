@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext";
 function Signup() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const { dispatch } = useAuthContext();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -17,7 +19,9 @@ function Signup() {
                 body: JSON.stringify({ email, password })
             });
             const data = response.json();
-            if (!response.ok) {
+            if (response.ok) {
+                dispatch({type: 'SIGNUP', payload: data});
+            } else if (!response.ok) {
                 setError(data.error);
             }
         } catch (error) {
@@ -42,6 +46,7 @@ function Signup() {
              onChange={(e) => setPassword(e.target.value)}
              required/>
 
+            {error && <div>{error}</div>}
              <button>Submit</button>
 
         </form>
