@@ -17,15 +17,15 @@ userSchema.statics.login = async function(email, password) {
         throw Error("Login - Email or Password is missing!");
     }
     // IMPORTANT: We grab the user's email and HASHED PASSWORD. Will compare typed password to the HASHED PASSWORD by using bcrypt.compare
-    const user = await this.findOne({email});
-    if (!user) {
+    const existingUser = await this.findOne({email});
+    if (!existingUser) {
         throw Error(`User with email: ${email} does NOT exist`);
     }
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, existingUser.password);
     if (!passwordMatch) {
         throw Error("Incorrect Email or Password!");
     }
-    return user;
+    return existingUser;
 }
 
 userSchema.statics.signup = async function(email, password) {

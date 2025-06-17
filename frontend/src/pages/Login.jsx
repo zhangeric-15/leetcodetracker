@@ -46,8 +46,7 @@ function Login() {
              required/>
 
             {error && <div>{error}</div>}
-             <button>Submit</button>
-
+             <button>Log in</button>
         </form>
     )
 }

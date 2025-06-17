@@ -32,22 +32,23 @@ function Signup() {
             <h2> Sign Up </h2>
             <label>Email:</label>
             <input
-             type="email"
-             placeholder="Email"
-             onChange={(e) => setEmail(e.target.value)}
-             required/>
+            type="email"
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+            required/>
 
             <label>Password:</label>
-             <input
-             type="password"
-             placeholder="Password"
-             onChange={(e) => setPassword(e.target.value)}
-             required/>
+            <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+            required/>
 
             {error && <div>{error}</div>}
-             <button>Submit</button>
+            <button>Sign up</button>
 
         </form>
+        
     )
 }
 
