@@ -23,8 +23,9 @@ function Login() {
                 console.log("Incorrect credentials for user login: ", data.error);
                 setError(data.error);
             }
+            // TODO: Work on saving user's data (email and JWT) to COOKIES or LOCAL STORAGE
         } catch (error) {
-            console.log("ERROR Logging in user. Error thrown: ", error);
+            console.log("ERROR sending POST request to login. Error thrown: ", error);
         }
     }
 

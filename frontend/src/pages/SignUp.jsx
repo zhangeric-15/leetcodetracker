@@ -22,8 +22,9 @@ function Signup() {
             } else if (!response.ok) {
                 setError(data.error);
             }
+            // TODO: Work on saving user's data (email and JWT) to COOKIES or LOCAL STORAGE
         } catch (error) {
-            console.log("ERROR Signing up user. Error thrown: ", error);
+            console.log("ERROR sending POST to sign up user. Error thrown: ", error);
         }
     }
 
