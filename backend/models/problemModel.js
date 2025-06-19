@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 
 const problemSchema = new mongoose.Schema({
-    userId: {
-        type: String,
+    // IMPORTANT: user field is referencing the OBJECTID (_id field automatically created by MongoDB) of the User object defined in userModel.js.
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         require: true 
     },
     date: {
@@ -23,10 +25,8 @@ const problemSchema = new mongoose.Schema({
         type: String,
         enum: ['UNDERSTAND', 'MEDIUM', 'NEEDS_REVIEW']
     },
-    topics: {
-        type: [String],
-        require: true
-    }
+    // Referencing the Topic's _id here. topics will contain a list of Topic objects defined in topicModel.js.
+    topics: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}]   
 });
 
 const Problem = mongoose.model('Problem', problemSchema);

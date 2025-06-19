@@ -2,7 +2,7 @@ const express = require('express');
 const requireAuthMiddleware = require('../middleware/requireAuth');
 const { getAllProblems } = require('../controllers/problemsController');
 
-problemRouter = express.Router();
+const problemRouter = express.Router();
 
 // Authentication Middleware
 problemRouter.use(requireAuthMiddleware);

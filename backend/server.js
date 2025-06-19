@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const userRouter = require('./routes/userRoutes');
-const problemRouter = require('./routes/problemRoutes')
+const problemRouter = require('./routes/problemRoutes');
+const topicRouter = require('./routes/topicRoutes');
 require('dotenv').config();
 
 const cors = require('cors');
@@ -16,6 +17,7 @@ app.use(express.json());
 
 app.use('/api/users', userRouter);
 app.use('/api/problems', problemRouter);
+app.use('/api/topics', topicRouter);
 
 mongoose.connect(process.env.MONGO_URI)
 .then((response) => {
