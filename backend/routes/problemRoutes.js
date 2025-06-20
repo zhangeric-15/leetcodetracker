@@ -1,6 +1,6 @@
 const express = require('express');
 const requireAuthMiddleware = require('../middleware/requireAuth');
-const { getAllProblems } = require('../controllers/problemsController');
+const { getAllProblems, addProblem } = require('../controllers/problemsController');
 
 const problemRouter = express.Router();
 
@@ -8,5 +8,6 @@ const problemRouter = express.Router();
 problemRouter.use(requireAuthMiddleware);
 
 problemRouter.get('/getAllProblems', getAllProblems);
+problemRouter.post('/addProblem', addProblem);
 
 module.exports = problemRouter;

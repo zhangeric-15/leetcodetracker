@@ -5,7 +5,7 @@ const problemSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true 
+        required: true 
     },
     date: {
         type: Date,
@@ -13,7 +13,7 @@ const problemSchema = new mongoose.Schema({
     },
     problemName: {
         type: String,
-        require: true
+        required: true
     },
     url: String,
     difficulty: {

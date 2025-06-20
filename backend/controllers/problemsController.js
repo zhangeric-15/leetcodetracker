@@ -14,7 +14,7 @@ async function areTopicsValid(user, topics) {
 
 async function addProblem(req, res) {
     const { date, problemName, url, difficulty, understanding, topics } = req.body;
-    const user = req.body.user;
+    const user = req.user;
     // We don't want to continue if there is no problemName. This is REQUIRED
     if (!problemName) {
         return res.status(400).json({error: "Missing problem name"});
@@ -24,7 +24,7 @@ async function addProblem(req, res) {
         return res.status(400).json({error: "One or more topics do NOT belong to the logged in User"});
     }
     try { 
-        const problem = await Problem.create({user, date, problemName, url, difficulty, understanding, topics});
+        const problem = await Problem.create({ user, date, problemName, url, difficulty, understanding, topics});
         return res.status(200).json(problem);
     } catch(error) {
         return res.status(500).json({ error: error.message });

@@ -4,11 +4,11 @@ const topicSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        require: true 
+        required: true 
     },
     topicName: {
         type: String,
-        require: true
+        required: true
     },
     color: {
         type: String,
