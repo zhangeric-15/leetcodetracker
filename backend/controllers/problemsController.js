@@ -33,8 +33,14 @@ async function addProblem(req, res) {
 
 }
 
-function getAllProblems(req, res) {
-    return res.status(200).json({success: "success"});
+async function getAllProblems(req, res) {
+    const user = req.user;
+    try {
+        const problems = await Problem.find({user});
+        return res.status(200).json(problems);
+    } catch(error) {
+        return res.status(500).json({error: error.message});
+    }
 }
 
 module.exports = {

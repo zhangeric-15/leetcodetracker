@@ -28,11 +28,12 @@ header h1 {
   font-size: 30px;
 }
 
-.allProblems {
+/* .allProblems {
   background-color: aqua;
   position: relative;
   margin-top: 150px;
-}
+  display: grid;
+} */
 
 .loginLogoutButtons {
   padding-top: 0px;
@@ -60,4 +61,17 @@ input {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
+}
+
+.problems-grid {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr; /* 4 columns, adjust widths */
+  gap: 8px;
+  padding: 16px;
+}
+
+.problems-header {
+  font-weight: bold;
+  background-color: #f2f2f2;
+  padding: 8px;
 }
