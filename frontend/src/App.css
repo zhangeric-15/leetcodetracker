@@ -68,10 +68,11 @@ input {
   grid-template-columns: 3fr 1fr 1fr 1fr; /* 4 columns, adjust widths */
   gap: 8px;
   padding: 16px;
+  position: relative;
+  top:80px;
 }
 
 .problems-header {
   font-weight: bold;
-  background-color: #f2f2f2;
   padding: 8px;
 }
