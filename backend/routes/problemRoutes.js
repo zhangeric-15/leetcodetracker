@@ -1,11 +1,12 @@
 const express = require('express');
-const requireAuthMiddleware = require('../middleware/requireAuth');
+const {authJwtBearer, authJwtCookie} = require('../middleware/requireAuth');
 const { getAllProblems, addProblem } = require('../controllers/problemsController');
 
 const problemRouter = express.Router();
 
 // Authentication Middleware
-problemRouter.use(requireAuthMiddleware);
+//problemRouter.use(authJwtBearer);
+problemRouter.use(authJwtCookie);
 
 problemRouter.get('/getAllProblems', getAllProblems);
 problemRouter.post('/addProblem', addProblem);

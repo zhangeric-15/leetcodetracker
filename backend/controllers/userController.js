@@ -2,7 +2,6 @@ const User  = require("../models/userModel")
 const jwt = require('jsonwebtoken')
 
 // paylod will be the user's _id property
-// TODO: RENAME PARAMETER
 function generateToken(payload) {
     const secretKey = process.env.JWT_SECRET_KEY;
     // set expiration date on token
@@ -17,6 +16,14 @@ async function signupUser(req, res) {
         const user = await User.signup(email, password);
         // Create JWT token
         const token = generateToken(user._id);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            path: '/' // Tells browser to send the cookie on ALL PATHS
+        });
+        // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
         return res.status(200).json({email, token})
     } catch(error) {
         console.log("Error signing up user: ", error.message)
@@ -29,6 +36,15 @@ async function loginUser(req, res) {
     try {
         const user = await User.login(email, password);
         const token = generateToken(user._id);
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'strict',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            path: '/' // Tells browser to send the cookie on ALL PATHS
+
+        });
+        // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
         return res.status(200).json({email, token});
     } catch(error) {
         console.log("Error logging in user: ", error.message);

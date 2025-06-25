@@ -15,7 +15,10 @@ const jwt = require('jsonwebtoken')
 */
 
 
-function requireAuthMiddleware(req, res, next) {
+
+// SOON TO BE DEPRECATED
+// VERIFY JWT which is stored as an Authorization Bearer token in the req.headers.
+function authJwtBearer(req, res, next) {
     const { authorization } = req.headers;
     if (!authorization) {
         console.log("Missing Authentication Bearer token - JWT");
@@ -35,4 +38,22 @@ function requireAuthMiddleware(req, res, next) {
     next();
 }
 
-module.exports = requireAuthMiddleware;
+function authJwtCookie(req, res, next) {
+    const token = req.cookies.token;
+    try {
+        const { userId } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        if (!userId) {
+            throw Error("JWT verified, but unable to grab userId");
+        }
+        req.user = userId;
+    } catch(error) {
+        console.log("Error verifying signature of JWT");
+        return res.status(401).json({error})
+    }
+    next();
+}
+
+module.exports = {
+    authJwtBearer,
+    authJwtCookie
+};
