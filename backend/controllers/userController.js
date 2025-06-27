@@ -16,7 +16,7 @@ async function signupUser(req, res) {
         const user = await User.signup(email, password);
         // Create JWT token
         const jwtToken = generateToken(user._id);
-        res.cookie('jwt-token', jwtToken, {
+        res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
@@ -36,7 +36,7 @@ async function loginUser(req, res) {
     try {
         const user = await User.login(email, password);
         const jwtToken = generateToken(user._id);
-        res.cookie('jwt-token', jwtToken, {
+        res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
@@ -52,7 +52,16 @@ async function loginUser(req, res) {
     }
 }
 
+// Purpose of this function is to utilize cookies stored in the browser and see if there is user currenty logged in.
+function getCurrentUser(req, res) {
+    const user  = req.user;
+    if (user) {
+        return res.status(200).json({ user })
+    } 
+    return res.status(401).json({error: "No user is currently logged in"});
+}
 module.exports = {
     signupUser,
-    loginUser
+    loginUser,
+    getCurrentUser
 };
