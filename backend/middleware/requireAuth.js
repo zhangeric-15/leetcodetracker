@@ -40,6 +40,10 @@ function authJwtBearer(req, res, next) {
 
 function authJwtCookie(req, res, next) {
     const token = req.cookies.token;
+    // Cookie is expired or missing
+    if (!token) {
+        return res.status(401).json({error: "Cookies have expired or are missing!"});
+    }
     try {
         const { userId } = jwt.verify(token, process.env.JWT_SECRET_KEY);
         if (!userId) {

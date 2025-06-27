@@ -15,8 +15,8 @@ async function signupUser(req, res) {
     try {
         const user = await User.signup(email, password);
         // Create JWT token
-        const token = generateToken(user._id);
-        res.cookie('token', token, {
+        const jwtToken = generateToken(user._id);
+        res.cookie('jwt-token', jwtToken, {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
@@ -24,7 +24,7 @@ async function signupUser(req, res) {
             path: '/' // Tells browser to send the cookie on ALL PATHS
         });
         // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
-        return res.status(200).json({email, token})
+        return res.status(200).json({email, token: jwtToken})
     } catch(error) {
         console.log("Error signing up user: ", error.message)
         return res.status(400).json({error: error.message})
@@ -35,8 +35,8 @@ async function loginUser(req, res) {
     const { email, password } = req.body;
     try {
         const user = await User.login(email, password);
-        const token = generateToken(user._id);
-        res.cookie('token', token, {
+        const jwtToken = generateToken(user._id);
+        res.cookie('jwt-token', jwtToken, {
             httpOnly: true,
             secure: false,
             sameSite: 'strict',
@@ -45,7 +45,7 @@ async function loginUser(req, res) {
 
         });
         // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
-        return res.status(200).json({email, token});
+        return res.status(200).json({email, token: jwtToken});
     } catch(error) {
         console.log("Error logging in user: ", error.message);
         return res.status(401).json({error: error.message});

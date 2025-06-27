@@ -14,6 +14,8 @@ function Signup() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                // IMPORTANT: Even for signing up and logging in, we need to have this credentials field to allow the browser to send and receive cookies
+                credentials: 'include', 
                 body: JSON.stringify({ email, password })
             });
             const data = await response.json();
