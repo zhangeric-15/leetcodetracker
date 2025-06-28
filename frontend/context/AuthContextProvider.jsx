@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
 export const AuthContext = createContext();
 
@@ -20,6 +20,19 @@ function authReducer(state, action) {
 
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {user: null});
+    useEffect(() => {
+        const isUserLoggedIn = async () => {
+            const response = await fetch('http://localhost:5001/api/currentUser', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            const userId = await response.json();
+            if (response.ok) {
+                dispatch({type: 'LOGIN', payload: userId});
+            }
+        }
+        isUserLoggedIn();
+    }, [])
     console.log("User state: ", state);
     return (
         <AuthContext.Provider value={{...state, dispatch}}>

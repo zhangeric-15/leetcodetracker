@@ -19,7 +19,7 @@ async function signupUser(req, res) {
         res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
-            sameSite: 'strict',
+            sameSite: 'None',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             path: '/' // Tells browser to send the cookie on ALL PATHS
         });
@@ -39,7 +39,7 @@ async function loginUser(req, res) {
         res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
-            sameSite: 'strict',
+            sameSite: 'None',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             path: '/' // Tells browser to send the cookie on ALL PATHS
 
@@ -54,14 +54,27 @@ async function loginUser(req, res) {
 
 // Purpose of this function is to utilize cookies stored in the browser and see if there is user currenty logged in.
 function getCurrentUser(req, res) {
+    // This is the userId from MongoDB.
     const user  = req.user;
     if (user) {
         return res.status(200).json({ user })
     } 
     return res.status(401).json({error: "No user is currently logged in"});
 }
+
+function logoutUser(req, res) {
+    // options (2nd parameter) should match the cookie we sent when logging in and signing up.
+    res.clearCookie('jwtToken', {
+        httpOnly: true,
+        sameSite: 'None',
+        secure: false
+    });
+    return res.status(200).json({message: "Successfully logged out and cleared cookies"});
+}
+
 module.exports = {
     signupUser,
     loginUser,
-    getCurrentUser
+    getCurrentUser,
+    logoutUser
 };
