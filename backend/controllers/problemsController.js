@@ -20,9 +20,11 @@ async function addProblem(req, res) {
         return res.status(400).json({error: "Missing problem name"});
     }
     // Check if the ObjectIds provided in the topics array are NOT VALID
-    const topicsValid = await areTopicsValid(user, topics);
-    if (!topicsValid) {
-        return res.status(400).json({error: "One or more topics do NOT belong to the logged in User"});
+    if (topics) {
+        const topicsValid = await areTopicsValid(user, topics);
+        if (!topicsValid) {
+            return res.status(400).json({error: "One or more topics do NOT belong to the logged in User"});
+        }
     }
     try { 
         const problem = await Problem.create({ user, date, problemName, url, difficulty, understanding, topics});

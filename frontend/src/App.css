@@ -64,15 +64,22 @@ input {
 }
 
 .problems-grid {
-  display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1fr; /* 4 columns, adjust widths */
-  gap: 8px;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
   position: relative;
   top:80px;
 }
 
-.problems-header {
+
+.problems-content {
   font-weight: bold;
   padding: 8px;
+  background-color: white;
+}
+
+.problems-header, .problem-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
+  gap: 15px;
+  padding: 12px;
 }

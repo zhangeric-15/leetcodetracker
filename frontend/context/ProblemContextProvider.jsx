@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
 
 export const ProblemContext = createContext();
 
@@ -15,10 +15,11 @@ function problemReducer(state, action) {
 }
 
 
-function ProblemContextProvider({ children }) {
+export function ProblemContextProvider({ children }) {
     const [state, dispatch] = useReducer(problemReducer, {problems: null});
     return (
-        <ProblemContext.Provider value={{state, dispatch}}>
+        // value will be {problems, dispatch}
+        <ProblemContext.Provider value={{...state, dispatch}}>
             { children }
         </ProblemContext.Provider>
     )
