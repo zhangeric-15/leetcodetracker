@@ -19,16 +19,19 @@ function authReducer(state, action) {
 }
 
 export const AuthContextProvider = ({ children }) => {
+    // {user: {email}}
     const [state, dispatch] = useReducer(authReducer, {user: null});
     useEffect(() => {
         const isUserLoggedIn = async () => {
-            const response = await fetch('http://localhost:5001/api/currentUser', {
+            const response = await fetch('http://localhost:5001/api/users/currentUser', {
                 method: 'GET',
                 credentials: 'include'
             });
-            const userId = await response.json();
+            const userData = await response.json();
             if (response.ok) {
-                dispatch({type: 'LOGIN', payload: userId});
+                dispatch({type: 'LOGIN', payload: userData});
+            } else {
+                console.log("No user logged in. Display Signup page");
             }
         }
         isUserLoggedIn();

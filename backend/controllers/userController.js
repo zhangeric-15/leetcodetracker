@@ -19,12 +19,11 @@ async function signupUser(req, res) {
         res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
-            sameSite: 'None',
+            sameSite: 'Lax',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             path: '/' // Tells browser to send the cookie on ALL PATHS
         });
-        // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
-        return res.status(200).json({email, token: jwtToken})
+        return res.status(200).json({email})
     } catch(error) {
         console.log("Error signing up user: ", error.message)
         return res.status(400).json({error: error.message})
@@ -39,13 +38,12 @@ async function loginUser(req, res) {
         res.cookie('jwtToken', jwtToken, {
             httpOnly: true,
             secure: false,
-            sameSite: 'None',
+            sameSite: 'Lax',
             maxAge: 24 * 60 * 60 * 1000, // 1 day
             path: '/' // Tells browser to send the cookie on ALL PATHS
 
         });
-        // TODO: Since we are utilizing cookies, may not need to return the JWT in the res body anymore?
-        return res.status(200).json({email, token: jwtToken});
+        return res.status(200).json({email});
     } catch(error) {
         console.log("Error logging in user: ", error.message);
         return res.status(401).json({error: error.message});
@@ -53,11 +51,12 @@ async function loginUser(req, res) {
 }
 
 // Purpose of this function is to utilize cookies stored in the browser and see if there is user currenty logged in.
-function getCurrentUser(req, res) {
+async function getCurrentUser(req, res) {
     // This is the userId from MongoDB.
-    const user  = req.user;
+    const userId  = req.user;
+    const user = await User.findOne({ _id: userId });
     if (user) {
-        return res.status(200).json({ user })
+        return res.status(200).json({ email: user.email })
     } 
     return res.status(401).json({error: "No user is currently logged in"});
 }

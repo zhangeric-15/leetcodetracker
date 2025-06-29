@@ -53,7 +53,7 @@ function authJwtCookie(req, res, next) {
         req.user = userId;
     } catch(error) {
         console.log("Error verifying signature of JWT");
-        return res.status(401).json({error})
+        return res.status(401).json({error: "Error verifying signature of JWT"})
     }
     next();
 }
