@@ -65,7 +65,7 @@ function logoutUser(req, res) {
     // options (2nd parameter) should match the cookie we sent when logging in and signing up.
     res.clearCookie('jwtToken', {
         httpOnly: true,
-        sameSite: 'None',
+        sameSite: 'Lax',
         secure: false
     });
     return res.status(200).json({message: "Successfully logged out and cleared cookies"});
