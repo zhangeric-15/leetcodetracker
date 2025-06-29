@@ -53,10 +53,10 @@ async function loginUser(req, res) {
 // Purpose of this function is to utilize cookies stored in the browser and see if there is user currenty logged in.
 async function getCurrentUser(req, res) {
     // This is the userId from MongoDB.
-    const userId  = req.user;
-    const user = await User.findOne({ _id: userId });
-    if (user) {
-        return res.status(200).json({ email: user.email })
+    const user  = req.user;
+    const userDoc = await User.findOne({ _id: user });
+    if (userDoc) {
+        return res.status(200).json({ email: userDoc.email })
     } 
     return res.status(401).json({error: "No user is currently logged in"});
 }
