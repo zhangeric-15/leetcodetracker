@@ -38,7 +38,7 @@ async function addProblem(req, res) {
 async function getAllProblems(req, res) {
     const user = req.user;
     try {
-        const problems = await Problem.find({user});
+        const problems = await Problem.find({user}).populate('topics');
         return res.status(200).json(problems);
     } catch(error) {
         return res.status(500).json({error: error.message});

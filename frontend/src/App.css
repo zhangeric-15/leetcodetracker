@@ -83,3 +83,14 @@ input {
   gap: 15px;
   padding: 12px;
 }
+
+/* Style for the container that holds all the Topic tags */
+.topicContainer {
+  display: flex;
+  gap: 5px;
+}
+
+/* Style for Topic tags */
+.topic {
+  color: white;
+}
