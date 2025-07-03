@@ -23,15 +23,19 @@ export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, {user: null});
     useEffect(() => {
         const isUserLoggedIn = async () => {
-            const response = await fetch('http://localhost:5001/api/users/currentUser', {
-                method: 'GET',
-                credentials: 'include'
-            });
-            const userData = await response.json();
-            if (response.ok) {
-                dispatch({type: 'LOGIN', payload: userData});
-            } else {
-                console.log("No user logged in. Display Signup page");
+            try {
+                const response = await fetch('http://localhost:5001/api/users/currentUser', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                const userData = await response.json();
+                if (response.ok) {
+                    dispatch({type: 'LOGIN', payload: userData});
+                } else {
+                    console.log("No user logged in. Display Signup page");
+                }
+            } catch(error) {
+                console.log("Unable to fetch current user GET request", error);
             }
         }
         isUserLoggedIn();

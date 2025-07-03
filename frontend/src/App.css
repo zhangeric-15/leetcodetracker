@@ -8,7 +8,7 @@ header {
   background: white;
   top: 0;
   left: 0;
-  position: fixed;
+  position: relative;
   width: 100%;
   height: 70px;
 }
@@ -27,13 +27,6 @@ header h1 {
   font-weight: 800;
   font-size: 30px;
 }
-
-/* .allProblems {
-  background-color: aqua;
-  position: relative;
-  margin-top: 150px;
-  display: grid;
-} */
 
 .loginLogoutButtons {
   padding-top: 0px;
@@ -67,7 +60,7 @@ input {
   display: flex;
   flex-direction: column;
   position: relative;
-  top:80px;
+  top:35px;
 }
 
 
@@ -77,9 +70,16 @@ input {
   background-color: white;
 }
 
-.problems-header, .problem-row {
+.problems-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
+  gap: 15px;
+  padding: 12px;
+}
+
+.problem-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
   gap: 15px;
   padding: 12px;
 }
@@ -88,8 +88,14 @@ input {
 .topicContainer {
   display: flex;
   gap: 5px;
+  position: relative;
 }
 
+/* Style for adding custom combobox for topics */
+.topicCombobox {
+  position: absolute;
+  display: none;
+}
 /* Style for Topic tags */
 .topic {
   color: white;
