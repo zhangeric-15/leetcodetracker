@@ -2,12 +2,20 @@ import { createContext, useReducer } from "react";
 
 export const ProblemContext = createContext();
 
+// action takes {type, payload}
 function problemReducer(state, action) {
     switch (action.type) {
         case 'CREATE_PROBLEM':
+        // action.payload = an array of problems
         case 'GET_PROBLEMS':
             return {
                 problems: action.payload
+            };
+        // action.payload = id of problem being deleted
+        case 'DELETE_PROBLEM':
+            return {
+                // filtering out the problem that was deleted
+                problems: state.problems.filter((problem) => problem._id !== action.payload)
             };
         default:
             return state;
