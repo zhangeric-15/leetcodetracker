@@ -26,11 +26,15 @@ function Home() {
         }
         fetchProblems();      
     }, [])
-    let problemsArr = null;
+
+    // rowNum is utilized to determine which row will have a white background
+    let rowNum = 0;
+    let problemsContentArr = null;
     if (problems) {
-        problemsArr = problems.map(problem => (
-            <ProblemContent key={problem._id} problem={problem}/>    
-        ));
+        problemsContentArr = problems.map(problem => {
+            rowNum += 1;
+            return <ProblemContent key={problem._id} problem={problem} rowNum={rowNum}/>    
+        });
     }
     return (
         <div className="problems-grid">
@@ -41,7 +45,7 @@ function Home() {
                 <div>Topics</div>
                 <div>Last Solved</div>
             </div>
-            {problemsArr}
+            {problemsContentArr}
         </div>
       
     );

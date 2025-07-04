@@ -1,15 +1,18 @@
 import { useProblemContext } from "../../hooks/useProblemContext";
 
-function ProblemContent({ problem }) {
+function ProblemContent({ problem, rowNum }) {
     const { dispatch } = useProblemContext();
 
     function createTopicTag(topic) {
         return (
-            <span className="topic" key={topic._id} style={{backgroundColor: topic.color}}>
+            <span className="topic" key={topic._id} style={{backgroundColor: topic.color, borderRadius: '8px', padding: '2px', display: 'inline-block', lineHeight: '2'}}>
                 {topic.topicName}
             </span> 
         );
     }
+
+    // TODO: createDifficultyTag
+    // TODO: createUnderstandingTag
 
     async function handleDeleteProblem() {
         try {
@@ -31,7 +34,7 @@ function ProblemContent({ problem }) {
     const topics = problem.topics.map(topic => (createTopicTag(topic)))
     return (
         <>
-            <div className="problem-row">
+            <div className="problem-row" style={{backgroundColor: rowNum % 2 == 0 ? 'white' : '#f1f1f1'}}>
                 <div>{problem.problemName}</div>
                 <div>{problem.difficulty}</div>
                 <div>{problem.understanding}</div>

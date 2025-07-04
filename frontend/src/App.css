@@ -89,6 +89,7 @@ input {
   display: flex;
   gap: 5px;
   position: relative;
+  flex-wrap: wrap;
 }
 
 /* Style for adding custom combobox for topics */
