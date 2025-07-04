@@ -45,7 +45,23 @@ async function getAllProblems(req, res) {
     }
 }
 
+async function deleteProblem(req, res) {
+    const problemId = req.params.problemId;
+    try {
+        const deletedProblem = await Problem.findByIdAndDelete(problemId);
+        if (deletedProblem) {
+            return res.status(200).json(deletedProblem);
+        } else {
+            return res.status(404).json({error: `Problem with id ${problemId} not found. Can not delete.`})
+        }
+
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
+
 module.exports = {
     getAllProblems,
-    addProblem
+    addProblem,
+    deleteProblem
 };
