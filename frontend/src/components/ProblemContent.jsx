@@ -3,16 +3,54 @@ import { useProblemContext } from "../../hooks/useProblemContext";
 function ProblemContent({ problem, rowNum }) {
     const { dispatch } = useProblemContext();
 
+    // Helper function for Difficulty and Understanding Tags. Convert Enums that are in ALL CAPS to readable words
+    function convertEnumToString(words) {
+        return words.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+    
     function createTopicTag(topic) {
         return (
-            <span className="topic" key={topic._id} style={{backgroundColor: topic.color, borderRadius: '8px', padding: '2px', display: 'inline-block', lineHeight: '2'}}>
+            <span className="tag" key={topic._id} style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span> 
         );
     }
 
-    // TODO: createDifficultyTag
-    // TODO: createUnderstandingTag
+    function createDifficultyTag() {
+        let color = 'BLUE';
+        if (problem.difficulty === 'HARD') {
+            color = 'RED';
+        } else if (problem.difficulty == 'EASY') {
+            color = 'GREEN';
+        } else if (problem.difficulty == 'MEDIUM') {
+            color = 'ORANGE';
+        } 
+        return (
+            <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                {convertEnumToString(problem.difficulty)}
+            </span> 
+        )
+    }
+
+    function createUnderstandingTag() {
+        let color = 'BLUE';
+        if (problem.understanding === 'NEEDS_REVIEW') {
+            color = 'RED';
+        } else if (problem.understanding == 'UNDERSTAND') {
+            color = 'GREEN';
+        } else if (problem.understanding == 'MEDIUM') {
+            color = 'ORANGE';
+        } 
+        return (
+            <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                {convertEnumToString(problem.understanding)}
+            </span> 
+        )
+    }
+
+    function convertToReadableDate() {
+        return new Date(problem.date).toLocaleDateString();
+    }
 
     async function handleDeleteProblem() {
         try {
@@ -36,15 +74,16 @@ function ProblemContent({ problem, rowNum }) {
         <>
             <div className="problem-row" style={{backgroundColor: rowNum % 2 == 0 ? 'white' : '#f1f1f1'}}>
                 <div>{problem.problemName}</div>
-                <div>{problem.difficulty}</div>
-                <div>{problem.understanding}</div>
+                <div>{createDifficultyTag()}</div>
+                <div>{createUnderstandingTag()}</div>
                 <div className="topicContainer">
                     {topics}
-                    <div className="topicCombobox">
+                    {/* Potential use for combobox idea later */}
+                    {/* <div className="topicCombobox">
                         Combobox
-                    </div>
+                    </div> */}
                 </div>
-                <div>{problem.date}</div>
+                <div>{convertToReadableDate()}</div>
                 <div>
                     <button onClick={handleDeleteProblem}>DELETE</button>
                 </div>

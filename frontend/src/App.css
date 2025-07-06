@@ -72,14 +72,16 @@ input {
 
 .problems-header {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
   gap: 15px;
   padding: 12px;
+  font-weight: bold;
+  font-family: sans-serif;
 }
 
 .problem-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr; /* 5 columns, adjust widths */
   gap: 15px;
   padding: 12px;
 }
@@ -97,7 +99,7 @@ input {
   position: absolute;
   display: none;
 }
-/* Style for Topic tags */
-.topic {
+/* Style for tags */
+.tag {
   color: white;
 }

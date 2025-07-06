@@ -29,9 +29,9 @@ function Home() {
 
     // rowNum is utilized to determine which row will have a white background
     let rowNum = 0;
-    let problemsContentArr = null;
+    let problemContentArr = null;
     if (problems) {
-        problemsContentArr = problems.map(problem => {
+        problemContentArr = problems.map(problem => {
             rowNum += 1;
             return <ProblemContent key={problem._id} problem={problem} rowNum={rowNum}/>    
         });
@@ -45,7 +45,7 @@ function Home() {
                 <div>Topics</div>
                 <div>Last Solved</div>
             </div>
-            {problemsContentArr}
+            {problemContentArr}
         </div>
       
     );
