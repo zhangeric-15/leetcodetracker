@@ -12,7 +12,7 @@ const topicSchema = new mongoose.Schema({
     },
     color: {
         type: String,
-        enum: ['BLUE', 'GREEN', 'YELLOW', 'RED', 'PURPLE', 'BLACK', 'PINK', 'ORANGE']
+        enum: ['BLUE', 'GREEN', 'RED', 'PURPLE', 'BLACK', 'PINK', 'ORANGE']
     }
 });
 

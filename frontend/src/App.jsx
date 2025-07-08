@@ -4,10 +4,10 @@ import './App.css';
 // Import Components
 import NavBar from './components/NavBar'
 // Import Pages
-import Home from './pages/Home'
 import Signup from './pages/SignUp'
 import { useAuthContext } from '../hooks/useAuthContext';
 import Login from './pages/Login';
+import Home from './pages/Home';
 
 
 function App() {
