@@ -73,7 +73,12 @@ function ProblemContent({ problem, rowNum }) {
     return (
         <>
             <div className="problem-row" style={{backgroundColor: rowNum % 2 == 0 ? 'white' : '#f1f1f1'}}>
-                <div>{problem.problemName}</div>
+                <div className="problemNameContainer">
+                    {problem.problemName}
+                    <a href={problem.url}>
+                        <i className="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
                 <div>{createDifficultyTag()}</div>
                 <div>{createUnderstandingTag()}</div>
                 <div className="topicContainer">

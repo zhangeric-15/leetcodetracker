@@ -103,3 +103,10 @@ input {
 .tag {
   color: white;
 }
+
+/* Style for 1st column for Problem Name */
+.problemNameContainer {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
