@@ -13,7 +13,7 @@ function ProblemGrid() {
                 });
                 const problems = await response.json();
                 if (response.ok) {
-                    dispatch({type: 'GET_PROBLEMS', payload: problems});
+                    dispatch({type: 'SET_PROBLEMS', payload: problems});
                 } else{
                     console.log("Bad Response from retriving all leetcode problems");
                 }
@@ -26,7 +26,7 @@ function ProblemGrid() {
 
     // rowNum is utilized to determine which row will have a white background
     let rowNum = 0;
-    let problemContentArr = null;
+    let problemContentArr = [];
     if (problems) {
         problemContentArr = problems.map(problem => {
             rowNum += 1;

@@ -7,7 +7,7 @@ function problemReducer(state, action) {
     switch (action.type) {
         case 'CREATE_PROBLEM':
         // action.payload = an array of problems
-        case 'GET_PROBLEMS':
+        case 'SET_PROBLEMS':
             return {
                 problems: action.payload
             };

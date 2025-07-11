@@ -75,7 +75,8 @@ function ProblemContent({ problem, rowNum }) {
             <div className="problem-row" style={{backgroundColor: rowNum % 2 == 0 ? 'white' : '#f1f1f1'}}>
                 <div className="problemNameContainer">
                     {problem.problemName}
-                    <a href={problem.url}>
+                    {/* noopener noreferrer is for security purposes, making sure no one can access data from leetcode app */}
+                    <a href={problem.url} target="_blank" rel="noopener noreferrer">
                         <i className="fa-solid fa-arrow-up-right-from-square"></i>
                     </a>
                 </div>
