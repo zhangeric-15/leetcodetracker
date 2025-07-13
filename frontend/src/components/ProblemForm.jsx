@@ -1,5 +1,7 @@
+import { useState } from "react";
 
 function ProblemForm() {
+    const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
 
     function handleSubmit() {
         console.log("Problem form submitted");
@@ -7,6 +9,7 @@ function ProblemForm() {
 
     function handleFormOpen() {
         console.log("Form opened");
+        setTopicMenuOpen(true);
     }
 
     return (
@@ -25,15 +28,34 @@ function ProblemForm() {
              onChange={(e) => setPassword(e.target.value)}
              /> */}
             
-            <div className="dropdown-container" onClick={handleFormOpen}>
-                <div>
+            <div className="dropdown-container">
+                {isTopicMenuOpen ? (
+                    <div className="dropdown-menu">
+                        <div className="dropdown-value">
+                            Default Value MENU
+                            <input
+                            type="text"
+                            placeholder="Problem Name"
+                            onChange={(e) => setEmail(e.target.value)}
+                            required/>
+                        </div>
+                        <div className="dropdown-menu-options">
+                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                                Test
+                            </span>
+                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                                Test
+                            </span> 
+                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                                Test
+                            </span>  
+                        </div>
+                    </div> 
+                ) : 
+                <div className="default-dropdown-value" onClick={handleFormOpen}>
                     Default Value
                 </div>
-                <div className="dropdown-menu">
-                    <span className="dropdown-item">Item 1</span>
-                    <span className="dropdown-item">Item 2</span>
-                    <span className="dropdown-item">Item 3</span>
-                </div>
+                }
             </div>
 
              <button>Add</button>

@@ -110,3 +110,27 @@ input {
   gap: 5px;
   flex-wrap: wrap;
 }
+
+.dropdown-container {
+  
+}
+
+.default-dropdown-value {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dropdown-menu {
+  max-height: 200px;
+  width: 120px;
+}
+
+/* For custom dropdown menu options */
+.dropdown-menu-options {
+  display: flex;
+  flex-direction: column;
+  max-height: 160px;
+  overflow-y: auto;
+  width: 120px;
+}
