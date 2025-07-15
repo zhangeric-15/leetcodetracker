@@ -123,14 +123,25 @@ input {
 
 .dropdown-menu {
   max-height: 200px;
-  width: 120px;
 }
 
 /* For custom dropdown menu options */
-.dropdown-menu-options {
+.dropdown-menu-options-container {
+  position: relative;
   display: flex;
   flex-direction: column;
-  max-height: 160px;
+  max-height: 190px;
   overflow-y: auto;
-  width: 120px;
+  z-index: 9999;
+}
+
+.dropdown-menu-option {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.colorSelectorInput {
+  width: 50px;
 }
