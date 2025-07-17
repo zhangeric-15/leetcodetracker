@@ -1,5 +1,6 @@
 import { useState } from "react";
 import TopicDropDown from "./TopicDropdown";
+import { TopicContextProvider } from "../../context/TopicContextProvider";
 
 function ProblemForm() {
     
@@ -24,7 +25,9 @@ function ProblemForm() {
             /> */}
             
             <label>Topics:</label>
-            <TopicDropDown/>
+            <TopicContextProvider>
+                <TopicDropDown/>
+            </TopicContextProvider>
             <div>
                 <button>Add</button>
                 <button>Cancel</button>
