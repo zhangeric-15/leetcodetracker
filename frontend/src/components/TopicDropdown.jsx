@@ -5,14 +5,17 @@ import { TopicContextProvider } from "../../context/TopicContextProvider";
 function TopicDropDown() {
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
     const [selectedTopics, setSelectedTopics] = useState([]);
+    // True topics value from the data base
     const {topics, dispatch} = useTopicContext();
+    const [topicSearchValue, setTopicSearchValue] = useState("");
+    const [filteredTopics, setFilteredTopics] = useState([])
 
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
     // Updating the object's 'current' property will NOT trigger a re-render. This is a variable that doesn't change during re-renders.
     // When linked with a component like <div> that, the 'current' property will be set to that DOM node AFTER it gets rendered on screen.
     const dropDownMenuRef = useRef(null);
-    // TODO: Not sure, if I need to update the dependency array for useEffect
+    // TODO: Not sure if I need to update the dependency array for useEffect
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return (() => {
@@ -42,8 +45,9 @@ function TopicDropDown() {
         event.stopPropagation();
     }
 
-    function createDropdownMenuOption() {
-        return topics.map(topic => {
+    // Create the list of topics dropdown menu options based on the content in topicsArr
+    function createDropdownMenuOption(topicsArr) {
+        return topicsArr.map(topic => {
             return (
                 <div key={topic._id} className="dropdown-menu-option">
                     <span className="tag" style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
@@ -61,6 +65,14 @@ function TopicDropDown() {
         })
     }
 
+    // Handles filtering the Topic Menu Options
+    function handleTopicSearch(event) {
+        console.log("Handle Topic Search triggered with value: ", event.target.value);
+        const searchStr = event.target.value.toLowerCase();
+        const filteredTopics = topics.filter(topic => (topic.topicName.toLowerCase().includes(searchStr)))
+        setTopicSearchValue(searchStr);
+        setFilteredTopics(filteredTopics);
+    }
 
     return (
         <div className="dropdown-container">
@@ -76,40 +88,11 @@ function TopicDropDown() {
                         <input
                         type="text"
                         placeholder="Topic Name"
+                        onChange={handleTopicSearch}
                         required/>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        {createDropdownMenuOption()}
-                        {/* <div className="dropdown-menu-option">
-                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                                Test
-                            </span>
-                            <div>
-                                <input
-                                className="colorSelectorInput"
-                                type="color"
-                                />
-                                <button>Delete</button>
-                            </div>
-                        </div>
-                        <div className="dropdown-menu-option">
-                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                                Test
-                            </span>
-                            <input
-                            className="colorSelectorInput"
-                            type="color"
-                            />
-                        </div>
-                        <div className="dropdown-menu-option">
-                            <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                                Test
-                            </span>
-                            <input
-                            className="colorSelectorInput"
-                            type="color"
-                            />
-                        </div> */}
+                        {(topicSearchValue === null || topicSearchValue === "") ? createDropdownMenuOption(topics) : createDropdownMenuOption(filteredTopics)}
                     </div>
                 </div> 
             ) : 
