@@ -11,8 +11,10 @@ const topicSchema = new mongoose.Schema({
         required: true
     },
     color: {
+        // Color will be stored as a Hexadecimal string - #RRGGBB
         type: String,
-        enum: ['BLUE', 'GREEN', 'RED', 'PURPLE', 'BLACK', 'PINK', 'ORANGE']
+        // Remove ENUM for now.
+        // enum: ['BLUE', 'GREEN', 'RED', 'PURPLE', 'BLACK', 'PINK', 'ORANGE']
     }
 });
 

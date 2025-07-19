@@ -110,3 +110,38 @@ input {
   gap: 5px;
   flex-wrap: wrap;
 }
+
+.dropdown-container {
+  
+}
+
+.default-dropdown-value {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dropdown-menu {
+  max-height: 200px;
+}
+
+/* For custom dropdown menu options */
+.dropdown-menu-options-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 190px;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.dropdown-menu-option {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.colorSelectorInput {
+  width: 50px;
+}
