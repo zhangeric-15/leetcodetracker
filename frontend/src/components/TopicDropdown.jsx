@@ -7,8 +7,10 @@ function TopicDropDown() {
     const [selectedTopics, setSelectedTopics] = useState([]);
     // True topics value from the data base
     const {topics, dispatch} = useTopicContext();
+    // Keeps track of the search value the user inputed 
     const [topicSearchValue, setTopicSearchValue] = useState("");
-    const [filteredTopics, setFilteredTopics] = useState([])
+    const [filteredTopics, setFilteredTopics] = useState([]);
+    const [exactSearchMatch, setExactSearchMatch] = useState(false);
 
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
@@ -36,6 +38,8 @@ function TopicDropDown() {
         if (dropDownMenuRef.current && !dropDownMenuRef.current.contains(event.target)) {
             console.log("Detected outside of Topic Dropdown Menu. Closing it!");
             setTopicMenuOpen(false);
+            // Reset the search state
+            setTopicSearchValue("");
         }
     }
 
@@ -65,13 +69,36 @@ function TopicDropDown() {
         })
     }
 
+    function createAddTopicOption() {
+        return (
+            <div className="dropdown-menu-option">
+                <div>
+                    <span>
+                        CREATE
+                    </span>
+                    <span className="tag" style={{backgroundColor: 'GREEN', borderRadius: '8px', padding: '6px', display: 'inline', marginLeft: "12px"}}>
+                        {topicSearchValue}
+                    </span>
+                </div>
+                <div>
+                    <input
+                    className="colorSelectorInput"
+                    type="color"
+                    />
+                </div>
+            </div>
+        )
+    }
+
     // Handles filtering the Topic Menu Options
     function handleTopicSearch(event) {
         console.log("Handle Topic Search triggered with value: ", event.target.value);
-        const searchStr = event.target.value.toLowerCase();
-        const filteredTopics = topics.filter(topic => (topic.topicName.toLowerCase().includes(searchStr)))
+        const searchStr = event.target.value;
+        const filteredTopics = topics.filter(topic => (topic.topicName.toLowerCase().includes(searchStr.toLowerCase())));
+        const exactMatch = filteredTopics.some(topic => topic.topicName.toLowerCase() === searchStr.toLowerCase());
         setTopicSearchValue(searchStr);
         setFilteredTopics(filteredTopics);
+        setExactSearchMatch(exactMatch);
     }
 
     return (
@@ -88,11 +115,14 @@ function TopicDropDown() {
                         <input
                         type="text"
                         placeholder="Topic Name"
+                        value={topicSearchValue}
                         onChange={handleTopicSearch}
                         required/>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        {(topicSearchValue === null || topicSearchValue === "") ? createDropdownMenuOption(topics) : createDropdownMenuOption(filteredTopics)}
+                        {(topicSearchValue === "") ? createDropdownMenuOption(topics) : createDropdownMenuOption(filteredTopics)}
+                        {/* We only want to create a new Topic Tag if it DOES NOT EXIST in the list of topic options and if there's actually a search value PRESENT */}
+                        {(topicSearchValue !== "") && !exactSearchMatch && createAddTopicOption()}
                     </div>
                 </div> 
             ) : 
