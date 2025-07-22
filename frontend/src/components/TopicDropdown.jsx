@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import useTopicContext from "../../hooks/useTopicContext";
-import { TopicContextProvider } from "../../context/TopicContextProvider";
+import { ChromePicker } from 'react-color';
+import TopicMenuOption from "./TopicMenuOption";
 
 function TopicDropDown() {
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
     const [selectedTopics, setSelectedTopics] = useState([]);
-    // True topics value from the data base
+    // SOURCE OF TRUTH - topics array from the data base
     const {topics, dispatch} = useTopicContext();
     // Keeps track of the search value the user inputed 
     const [topicSearchValue, setTopicSearchValue] = useState("");
     const [filteredTopics, setFilteredTopics] = useState([]);
     const [exactSearchMatch, setExactSearchMatch] = useState(false);
+
 
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
@@ -26,9 +28,15 @@ function TopicDropDown() {
         })
     }, [])
 
-    function handleDropdownOpen() {
+    function handleOpeningDropdown() {
         console.log("Form opened");
         setTopicMenuOpen(true);
+        // TODO: Add logic for updating filteredTopics everytime the dropdown opens
+        setFilteredTopics(topics.filter(topic => !selectedTopics.includes(topic)));
+    }
+
+    function handleSelectedTopicOption(topicClicked) {
+        setSelectedTopics(prev => [...prev, topicClicked]);
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu
@@ -43,28 +51,28 @@ function TopicDropDown() {
         }
     }
 
-    // TODO: Implement
-    function handleDeleteTopic(event) {
-        // Prevents event from BUBBLING UP to parent
-        event.stopPropagation();
-    }
-
     // Create the list of topics dropdown menu options based on the content in topicsArr
     function createDropdownMenuOption(topicsArr) {
         return topicsArr.map(topic => {
             return (
-                <div key={topic._id} className="dropdown-menu-option">
-                    <span className="tag" style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                        {topic.topicName}
-                    </span>
-                    <div>
-                        <input
-                        className="colorSelectorInput"
-                        type="color"
-                        />
-                        <button>Delete</button>
-                    </div>
-                </div>
+                <TopicMenuOption key={topic._id} topic={topic} onClick={handleSelectedTopicOption}/>
+                // <div key={topic._id} className="dropdown-menu-option">
+                //     <span className="tag" style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                //         {topic.topicName}
+                //     </span>
+                //     <div>
+                //         {/* <input
+                //         className="colorSelectorInput"
+                //         type="color"
+                //         /> */}
+                //         <button onClick={handleChangeColor}>Change Color</button>
+                //         {showColorPicker&& (<div style={{position: 'absolute'}}>
+                //             HIII
+                //             <ChromePicker/>
+                //         </div>)}
+                //         <button onClick={handleDeleteTopic}>Delete</button>
+                //     </div>
+                // </div>
             )
         })
     }
@@ -120,13 +128,14 @@ function TopicDropDown() {
                         required/>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        {(topicSearchValue === "") ? createDropdownMenuOption(topics) : createDropdownMenuOption(filteredTopics)}
+                        {createDropdownMenuOption(filteredTopics)}
+                        {/* {(topicSearchValue === "") ? createDropdownMenuOption(topics) : createDropdownMenuOption(filteredTopics)} */}
                         {/* We only want to create a new Topic Tag if it DOES NOT EXIST in the list of topic options and if there's actually a search value PRESENT */}
-                        {(topicSearchValue !== "") && !exactSearchMatch && createAddTopicOption()}
+                        {/* {(topicSearchValue !== "") && !exactSearchMatch && createAddTopicOption()} */}
                     </div>
                 </div> 
             ) : 
-            <div className="default-dropdown-value" onClick={handleDropdownOpen}>
+            <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
                 <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
                     Default Value
                 </span>

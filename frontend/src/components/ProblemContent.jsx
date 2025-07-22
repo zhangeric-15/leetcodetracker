@@ -84,10 +84,6 @@ function ProblemContent({ problem, rowNum }) {
                 <div>{createUnderstandingTag()}</div>
                 <div className="topicContainer">
                     {topics}
-                    {/* Potential use for combobox idea later */}
-                    {/* <div className="topicCombobox">
-                        Combobox
-                    </div> */}
                 </div>
                 <div>{convertToReadableDate()}</div>
                 <div>
