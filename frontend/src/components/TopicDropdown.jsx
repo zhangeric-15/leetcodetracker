@@ -35,8 +35,10 @@ function TopicDropDown() {
         setFilteredTopics(topics.filter(topic => !selectedTopics.includes(topic)));
     }
 
-    function handleSelectedTopicOption(topicClicked) {
-        setSelectedTopics(prev => [...prev, topicClicked]);
+    // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
+    function handleSelectedTopicOption(topic) {
+        setSelectedTopics(prev => [...prev, topic]);
+        setFilteredTopics(prev => prev.filter(filteredTopic => filteredTopic !== topic));
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu
@@ -51,28 +53,20 @@ function TopicDropDown() {
         }
     }
 
+    function createSelectedTopicTags() {
+        return selectedTopics.map(selectedTopic => (
+            <span className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                {selectedTopic.topicName}
+            </span>
+        ))
+    }
+
     // Create the list of topics dropdown menu options based on the content in topicsArr
     function createDropdownMenuOption(topicsArr) {
+        console.log("Create dropdown menu option method ran");
         return topicsArr.map(topic => {
             return (
                 <TopicMenuOption key={topic._id} topic={topic} onClick={handleSelectedTopicOption}/>
-                // <div key={topic._id} className="dropdown-menu-option">
-                //     <span className="tag" style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                //         {topic.topicName}
-                //     </span>
-                //     <div>
-                //         {/* <input
-                //         className="colorSelectorInput"
-                //         type="color"
-                //         /> */}
-                //         <button onClick={handleChangeColor}>Change Color</button>
-                //         {showColorPicker&& (<div style={{position: 'absolute'}}>
-                //             HIII
-                //             <ChromePicker/>
-                //         </div>)}
-                //         <button onClick={handleDeleteTopic}>Delete</button>
-                //     </div>
-                // </div>
             )
         })
     }
@@ -108,18 +102,15 @@ function TopicDropDown() {
         setFilteredTopics(filteredTopics);
         setExactSearchMatch(exactMatch);
     }
-
+    console.log("State being reset");
     return (
         <div className="dropdown-container">
             {isTopicMenuOpen ? (
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
-                        <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline-block'}}>
-                            Default
-                        </span>
-                        <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline-block'}}>
-                            Default
-                        </span>
+                        <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
+                            {selectedTopics.length !== 0 ? createSelectedTopicTags() : (<div style={{padding: '20px'}}></div>)}
+                        </div>
                         <input
                         type="text"
                         placeholder="Topic Name"
@@ -136,13 +127,10 @@ function TopicDropDown() {
                 </div> 
             ) : 
             <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
-                <span className="tag" style={{backgroundColor: 'Blue', borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                    Default Value
-                </span>
+                {selectedTopics.length !== 0 ? createSelectedTopicTags() : (<div style={{padding: '20px'}}></div>)}
             </div>
             }
         </div>
-        
     );
 }
 

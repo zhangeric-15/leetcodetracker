@@ -3,7 +3,6 @@ import { useState } from "react";
 function TopicMenuOption({ topic, onClick }) {
     const [color, setColor] = useState(topic.color);
     const [showColorPicker, setShowColorPicker] = useState(false);
-    const [topic, setTopic] = useState(topic);
 
     // TODO: Implement
     function handleDeleteTopic(event) {
@@ -11,15 +10,8 @@ function TopicMenuOption({ topic, onClick }) {
         event.stopPropagation();
     }
 
-    function handleMenuOptionClick() {
-        if (isNew) {
-            console.log("NEW TOPIC - Need to call POST request to add new topic to database");
-        } else {
-            setSelectedTopics((prev) => [...prev, topic]);
-        }
-    }
     return (
-        <div className="dropdown-menu-option" onClick={() => handleMenuOptionClick(topic)}>
+        <div className="dropdown-menu-option" onClick={() => onClick(topic)}>
             <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span>

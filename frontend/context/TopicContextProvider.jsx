@@ -16,6 +16,7 @@ function topicReducer(state, action) {
 }
 
 export function TopicContextProvider({ children }) {
+    console.log("Topic Context Provider re-rendering");
     const [state, dispatch] = useReducer(topicReducer, {topics: null})
     useEffect(() => {
         const getTopics = async () => {
@@ -32,8 +33,7 @@ export function TopicContextProvider({ children }) {
             }
         }
         getTopics();
-    })
-
+    }, [])
     return (
         // value will be {topics, dispatch}
         <TopicContext.Provider value={{...state, dispatch}}>
