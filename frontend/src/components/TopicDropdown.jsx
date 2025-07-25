@@ -28,17 +28,30 @@ function TopicDropDown() {
         })
     }, [])
 
+
     function handleOpeningDropdown() {
         console.log("Form opened");
         setTopicMenuOpen(true);
+        setFilteredTopics(topics);
         // TODO: Add logic for updating filteredTopics everytime the dropdown opens
-        setFilteredTopics(topics.filter(topic => !selectedTopics.includes(topic)));
+        // TODO: REMOVING THIS FOR NOW - logic for removing selected topics from combobox options.
+        //setFilteredTopics(topics.filter(topic => !selectedTopics.includes(topic)));
     }
 
     // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
-    function handleSelectedTopicOption(topic) {
-        setSelectedTopics(prev => [...prev, topic]);
-        setFilteredTopics(prev => prev.filter(filteredTopic => filteredTopic !== topic));
+    function handleSelectedTopic(topic) {
+        if (!selectedTopics.includes(topic)) {
+            setSelectedTopics(prev => [...prev, topic]);
+        }
+        // TODO: REMOVING THIS FOR NOW - logic for removing selected topics from combobox options.
+        // setFilteredTopics(prev => prev.filter(filteredTopic => filteredTopic !== topic));
+    }
+
+    function handleTopicDeletion(topic) {
+        const updatedSelectedTopics = selectedTopics.filter(selectedTopic => selectedTopic !== topic);
+        const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic !== topic);
+        setSelectedTopics(updatedSelectedTopics);
+        setFilteredTopics(updatedFilteredTopics);
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu
@@ -57,6 +70,9 @@ function TopicDropDown() {
         return selectedTopics.map(selectedTopic => (
             <span className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {selectedTopic.topicName}
+                <button>
+                    <i class="fa-solid fa-x"></i>
+                </button>
             </span>
         ))
     }
@@ -66,7 +82,7 @@ function TopicDropDown() {
         console.log("Create dropdown menu option method ran");
         return topicsArr.map(topic => {
             return (
-                <TopicMenuOption key={topic._id} topic={topic} onClick={handleSelectedTopicOption}/>
+                <TopicMenuOption key={topic._id} topic={topic} onClick={handleSelectedTopic} isSelected={selectedTopics.includes(topic)} onDelete={handleTopicDeletion}/>
             )
         })
     }
