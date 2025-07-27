@@ -4,19 +4,26 @@ import { createContext, useReducer, useEffect } from "react";
 export const TopicContext = createContext();
 
 function topicReducer(state, action) {
+    console.log('topicReducer triggered');
     switch (action.type) {
         // action.payload = list of topics
         case 'SET_TOPICS':
            return {
             topics: action.payload
            };
+        // action.payload = topic object being deleted
+        case 'DELETE_TOPIC':
+            console.log('DELETE TOPIC triggered');
+            const deletedTopic = action.payload;
+            return {
+                topics: state.topics.filter(topic => topic._id !== action.payload._id)
+            };
         default:
             return state; 
     }
 }
 
 export function TopicContextProvider({ children }) {
-    console.log("Topic Context Provider re-rendering");
     const [state, dispatch] = useReducer(topicReducer, {topics: null})
     useEffect(() => {
         const getTopics = async () => {
