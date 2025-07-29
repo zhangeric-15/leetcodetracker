@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import useTopicContext from "../../hooks/useTopicContext";
 import { ChromePicker } from 'react-color';
 import TopicMenuOption from "./TopicMenuOption";
+import TopicCreateOption from "./TopicCreateOption";
 
 function TopicDropDown() {
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
@@ -45,6 +46,7 @@ function TopicDropDown() {
         }
     }
 
+    // Handle DELETING Topics permanently 
     function handleTopicDeletion(deletedTopic) {
         const updatedSelectedTopics = selectedTopics.filter(selectedTopic => selectedTopic._id !== deletedTopic._id);
         const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic._id !== deletedTopic._id);
@@ -65,9 +67,14 @@ function TopicDropDown() {
         }
     }
 
+    // Handle REMOVING SELECTED topics 
     function handleRemoveSelectedTopic(event, removeTopic) {
         event.stopPropagation();
         setSelectedTopics(selectedTopics.filter(selectedTopic => selectedTopic._id !== removeTopic._id));
+    }
+
+    function handleNewTopic(newTopic) {
+
     }
 
     function createSelectedTopicTags() {
@@ -100,24 +107,7 @@ function TopicDropDown() {
     }
 
     function createAddTopicOption() {
-        return (
-            <div className="dropdown-menu-option">
-                <div>
-                    <span>
-                        CREATE
-                    </span>
-                    <span className="tag" style={{backgroundColor: 'GREEN', borderRadius: '8px', padding: '6px', display: 'inline', marginLeft: "12px"}}>
-                        {topicSearchValue}
-                    </span>
-                </div>
-                <div>
-                    <input
-                    className="colorSelectorInput"
-                    type="color"
-                    />
-                </div>
-            </div>
-        )
+        return <TopicCreateOption value={topicSearchValue} handleNewTopic={handleNewTopic}/>
     }
 
     // Handles filtering the Topic Menu Options
