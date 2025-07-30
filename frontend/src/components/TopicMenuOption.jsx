@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 
-function TopicMenuOption({ topic, onClick, isSelected, onDelete}) {
+function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion}) {
     const [color, setColor] = useState(topic.color);
     const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -8,12 +8,17 @@ function TopicMenuOption({ topic, onClick, isSelected, onDelete}) {
     function handleDeleteTopic(event) {
         // Prevents event from BUBBLING UP to parent
         event.stopPropagation();
-        onDelete(topic);
+        handleDeletion(topic);
+    }
+
+    function handleSelectedTopic(event) {
+        event.stopPropagation();
+        handleSelection(topic);
     }
 
 
     return (
-        <div className="dropdown-menu-option" onClick={() => onClick(topic)} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>
+        <div className="dropdown-menu-option" onClick={handleSelectedTopic} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>
             <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span>

@@ -30,13 +30,16 @@ function TopicDropDown() {
     }, [])
 
     // TODO: May need this later?
-    // useEffect(() => setFilteredTopics(topics), [topics]);
+    useEffect(() => {
+        if (!topicSearchValue) {
+            // Reset filteredTopics to original context state
+            setFilteredTopics(topics)
+        }
+    }, [topics]);
 
     function handleOpeningDropdown() {
         console.log("Form opened");
         setTopicMenuOpen(true);
-        // Reset filteredtopics back to all topics present in database
-        setFilteredTopics(topics);
     }
 
     // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
@@ -51,8 +54,24 @@ function TopicDropDown() {
         const updatedSelectedTopics = selectedTopics.filter(selectedTopic => selectedTopic._id !== deletedTopic._id);
         const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic._id !== deletedTopic._id);
         setSelectedTopics(updatedSelectedTopics);
-        setFilteredTopics(updatedFilteredTopics);
         dispatch({type: 'DELETE_TOPIC', payload: deletedTopic});
+        // If there's no more filtered topics, we should reset to context topics state
+        if (updatedFilteredTopics.length === 0) {
+            setExactSearchMatch(false);
+            setTopicSearchValue("");
+            
+        } else {
+            setFilteredTopics(updatedFilteredTopics);
+        }
+    }
+
+    // Handle CREATING new Topic
+    // This will always trigger a filtered topics reset to context topics state
+    function handleTopicCreation(newTopic) {
+        setSelectedTopics(prev => [...prev, newTopic]);
+        setExactSearchMatch(false);
+        setTopicSearchValue("");
+        dispatch({type: 'CREATE_TOPIC', payload: newTopic});
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu
@@ -71,10 +90,6 @@ function TopicDropDown() {
     function handleRemoveSelectedTopic(event, removeTopic) {
         event.stopPropagation();
         setSelectedTopics(selectedTopics.filter(selectedTopic => selectedTopic._id !== removeTopic._id));
-    }
-
-    function handleNewTopic(newTopic) {
-
     }
 
     function createSelectedTopicTags() {
@@ -97,17 +112,17 @@ function TopicDropDown() {
     } 
 
     // Create the list of topics dropdown menu options based on the content in topicsArr
-    function createDropdownMenuOption(topicsArr) {
+    function createDropdownMenuOption() {
         console.log("Create dropdown menu option method ran");
-        return topicsArr.map(topic => {
+        return filteredTopics.map(topic => {
             return (
-                <TopicMenuOption key={topic._id} topic={topic} onClick={handleSelectedTopic} isSelected={selectedTopics.includes(topic)} onDelete={handleTopicDeletion}/>
+                <TopicMenuOption key={topic._id} topic={topic} handleSelection={handleSelectedTopic} isSelected={selectedTopics.includes(topic)} handleDeletion={handleTopicDeletion}/>
             )
         })
     }
 
     function createAddTopicOption() {
-        return <TopicCreateOption value={topicSearchValue} handleNewTopic={handleNewTopic}/>
+        return <TopicCreateOption value={topicSearchValue} handleNewTopic={handleTopicCreation}/>
     }
 
     // Handles filtering the Topic Menu Options
@@ -137,7 +152,7 @@ function TopicDropDown() {
                         required/>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        {createDropdownMenuOption(filteredTopics)}
+                        {createDropdownMenuOption()}
                         {/* We only want to create a new Topic Tag if it DOES NOT EXIST in the list of topic options and if there's a search value PRESENT */}
                         {(topicSearchValue !== "") && !exactSearchMatch && createAddTopicOption()}
                     </div>

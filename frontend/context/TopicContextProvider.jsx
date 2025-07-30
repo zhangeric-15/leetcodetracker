@@ -16,8 +16,16 @@ function topicReducer(state, action) {
             console.log('DELETE TOPIC triggered');
             const deletedTopic = action.payload;
             return {
-                topics: state.topics.filter(topic => topic._id !== action.payload._id)
+                topics: state.topics.filter(topic => topic._id !== deletedTopic._id)
             };
+        // action.payload = topic object that was created
+        case 'CREATE_TOPIC':
+            console.log('CREATE TOPIC triggered');
+            const newTopic = action.payload;
+            return {
+                topics: [...state.topics, newTopic]
+            };
+
         default:
             return state; 
     }
