@@ -1,4 +1,5 @@
 const Topic = require('../models/topicModel');
+const Problem = require('../models/problemModel')
 
 async function addTopic(req, res) {
     const { topicName, color } = req.body;
@@ -25,7 +26,21 @@ async function getAllTopics(req, res) {
     }
 }
 
+// Remove the topic document with the specified topicId from the database, and update any Problem documents that still reference the deleted topic.
+async function deleteTopic(req, res) {
+    const topicId = req.params.topicId;
+    try {
+        const topicDeleted = await Topic.findByIdAndDelete(topicId);
+        // Go through Problem collection, find Problem documents that has the topicId in its topics array and REMOVE it.
+        await Problem.updateMany({topics: topicId}, {$pull: {topics: topicId}});
+        return res.status(200).json({topicDeleted});
+    } catch(error) {
+        return res.status(500).json({error: error.message});
+    }
+}
+
 module.exports = {
     addTopic,
-    getAllTopics
+    getAllTopics,
+    deleteTopic
 };

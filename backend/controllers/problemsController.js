@@ -19,7 +19,7 @@ async function addProblem(req, res) {
     if (!problemName) {
         return res.status(400).json({error: "Missing problem name"});
     }
-    // Check if the ObjectIds provided in the topics array are NOT VALID
+    // Check if the ObjectIds provided in the topics array BELONG to the logged in user.
     if (topics) {
         const topicsValid = await areTopicsValid(user, topics);
         if (!topicsValid) {
