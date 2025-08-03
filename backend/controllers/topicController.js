@@ -1,5 +1,6 @@
 const Topic = require('../models/topicModel');
 const Problem = require('../models/problemModel')
+const mongoose = require('mongoose')
 
 async function addTopic(req, res) {
     const { topicName, color } = req.body;
@@ -29,11 +30,17 @@ async function getAllTopics(req, res) {
 // Remove the topic document with the specified topicId from the database, and update any Problem documents that still reference the deleted topic.
 async function deleteTopic(req, res) {
     const topicId = req.params.topicId;
+    // IMPORTANT CHECK - Make sure the topicId is valid and in the correct format
+    if (!mongoose.Types.ObjectId.isValid(topicId)) {
+        return res.status(400).json({error: "Topic Deletion Error - Not a valid ID for topicId"});
+    }
     try {
         const topicDeleted = await Topic.findByIdAndDelete(topicId);
-        // Go through Problem collection, find Problem documents that has the topicId in its topics array and REMOVE it.
-        await Problem.updateMany({topics: topicId}, {$pull: {topics: topicId}});
-        return res.status(200).json({topicDeleted});
+        if (topicDeleted) {
+            // Go through Problem collection, find Problem documents that has the DELETED topicId in its topics array and REMOVE it.
+            await Problem.updateMany({topics: topicId}, {$pull: {topics: topicId}});
+            return res.status(200).json({topicDeleted, msg: "Successfully deleted topic and updated any problem referencing deleted topic."});
+        }
     } catch(error) {
         return res.status(500).json({error: error.message});
     }
