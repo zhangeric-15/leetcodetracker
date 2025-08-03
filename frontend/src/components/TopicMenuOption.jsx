@@ -5,9 +5,20 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion}) 
     const [showColorPicker, setShowColorPicker] = useState(false);
 
     // TODO: Implement
-    function handleDeleteTopic(event) {
+    async function handleDeleteTopic(event) {
         // Prevents event from BUBBLING UP to parent
         event.stopPropagation();
+        try {
+            const response = await fetch(`http://localhost:5001/api/topics/${topic._id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            if (response.ok) {
+                handleDeletion(topic);
+            }
+        } catch(error) {
+            console.log('Topic deletion error');
+        }
         handleDeletion(topic);
     }
 

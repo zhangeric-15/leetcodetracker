@@ -105,7 +105,7 @@ function TopicDropDown() {
             <span className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {selectedTopic.topicName}
                 <button onClick={(event) => handleRemoveSelectedTopic(event, selectedTopic)}>
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x"></i>
                 </button>
             </span>
         ))
