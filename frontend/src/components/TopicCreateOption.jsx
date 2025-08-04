@@ -1,7 +1,25 @@
 import { useState } from "react";
 
+// GENERATED FROM GOOGLE AI 
+function generateRandomColor() {
+  // Generate a random integer between 0 and 16777215 (which is 0xFFFFFF in decimal)
+  const randomNumber = Math.floor(Math.random() * 16777215);
+
+  // Convert the number to a hexadecimal string
+  let hexColor = randomNumber.toString(16);
+
+  // Pad the string with leading zeros if it's less than 6 characters long
+  // This ensures a valid 6-digit hexadecimal color code
+  hexColor = hexColor.padStart(6, '0');
+
+  // Return the color code with the "#" prefix
+  return `#${hexColor.toUpperCase()}`;
+}
+
+
 function TopicCreateOption({ value, handleNewTopic }) {
-    const [color, setColor] = useState('GREEN');
+    // IMPORTANT - the function inside useState to generate the random color only RUNS ONCE when the component is created
+    const [color, setColor] = useState(() => generateRandomColor());
 
     async function handleClick(event) {
         event.stopPropagation();

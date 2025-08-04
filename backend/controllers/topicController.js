@@ -38,6 +38,7 @@ async function deleteTopic(req, res) {
         const topicDeleted = await Topic.findByIdAndDelete(topicId);
         if (topicDeleted) {
             // Go through Problem collection, find Problem documents that has the DELETED topicId in its topics array and REMOVE it.
+            // $pull means we are removing that topicId from the topics array 
             await Problem.updateMany({topics: topicId}, {$pull: {topics: topicId}});
             return res.status(200).json({topicDeleted, msg: "Successfully deleted topic and updated any problem referencing deleted topic."});
         }
