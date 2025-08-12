@@ -5,6 +5,7 @@ import TopicMenuOption from "./TopicMenuOption";
 import TopicCreateOption from "./TopicCreateOption";
 
 function TopicDropDown() {
+    const dropdownRef = useRef();
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
     const [selectedTopics, setSelectedTopics] = useState([]);
     // SOURCE OF TRUTH - topics array from the data base
@@ -13,14 +14,14 @@ function TopicDropDown() {
     const [topicSearchValue, setTopicSearchValue] = useState("");
     const [filteredTopics, setFilteredTopics] = useState([]);
     const [exactSearchMatch, setExactSearchMatch] = useState(false);
-
-
+    // Check if color picker is open. If it is, we don't want any clicks on it to close the form (since the color picker is PORTALED somewhere else in the DOM)
+    const isColorPickerOpen = useRef(false);
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
     // Updating the object's 'current' property will NOT trigger a re-render. This is a variable that doesn't change during re-renders.
     // When linked with a component like <div> that, the 'current' property will be set to that DOM node AFTER it gets rendered on screen.
     const dropDownMenuRef = useRef(null);
-    // TODO: Not sure if I need to update the dependency array for useEffect
+    
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return (() => {
@@ -29,7 +30,6 @@ function TopicDropDown() {
         })
     }, [])
 
-    // TODO: May need this later?
     useEffect(() => {
         if (!topicSearchValue) {
             // Reset filteredTopics to original context state
@@ -40,6 +40,10 @@ function TopicDropDown() {
     function handleOpeningDropdown() {
         console.log("Form opened");
         setTopicMenuOpen(true);
+    }
+
+    function handleColorPickClicked(isOpen) {
+        isColorPickerOpen.current = isOpen;
     }
 
     // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
@@ -69,6 +73,8 @@ function TopicDropDown() {
     // This will always trigger a filtered topics reset to context topics state
     function handleTopicCreation(newTopic) {
         setSelectedTopics(prev => [...prev, newTopic]);
+        // IMPORTANT - We want to reset the dropdown menu to showcase everything. 
+        //      To do this, set the search value text to an empty string and the exact match boolean to false. 
         setExactSearchMatch(false);
         setTopicSearchValue("");
         dispatch({type: 'CREATE_TOPIC', payload: newTopic});
@@ -78,7 +84,7 @@ function TopicDropDown() {
     function handleClickOutside(event) {
         // dropDownMenuRef.current.contains(event.target) checks if the user clicked INSIDE the dropdown menu
         // Adding a ! means we want to make sure the user clicked outside so we can CLOSE it
-        if (dropDownMenuRef.current && !dropDownMenuRef.current.contains(event.target)) {
+        if (!isColorPickerOpen.current && dropDownMenuRef.current && !dropDownMenuRef.current.contains(event.target)) {
             console.log("Detected outside of Topic Dropdown Menu. Closing it!");
             setTopicMenuOpen(false);
             // Reset the search state
@@ -113,10 +119,11 @@ function TopicDropDown() {
 
     // Create the list of topics dropdown menu options based on the content in topicsArr
     function createDropdownMenuOption() {
-        console.log("Create dropdown menu option method ran");
         return filteredTopics.map(topic => {
             return (
-                <TopicMenuOption key={topic._id} topic={topic} handleSelection={handleSelectedTopic} isSelected={selectedTopics.includes(topic)} handleDeletion={handleTopicDeletion}/>
+                <TopicMenuOption key={topic._id} topic={topic} handleSelection={handleSelectedTopic} 
+                    isSelected={selectedTopics.includes(topic)} handleDeletion={handleTopicDeletion}
+                    handleColorPickClicked={handleColorPickClicked}/>
             )
         })
     }
@@ -135,6 +142,8 @@ function TopicDropDown() {
         setFilteredTopics(searchedTopics);
         setExactSearchMatch(exactMatch);
     }
+
+    console.log("COLOR PICK CLICKED: ", isColorPickerOpen);
     
     return (
         <div className="dropdown-container">
