@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, handleColorPickClicked}) {
     const [color, setColor] = useState(topic.color);
+    const [tempColor, setTempColor] = useState(topic.color);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const colorChangeButtonRef = useRef();
     const [colorPickerStyle, setColorPickerStyle] = useState();
@@ -37,16 +38,22 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
         handleColorPickClicked(true);
     }
 
-    function handleColorChange(color, event) {
-        //event.stopPropagation();
-        console.log("New color is: ", color);
-        setColor(color);
+    // Handle user attempting to change color of topic. Setting the new color as TEMP until User confirms selection
+    function handleColorChange(tempColor, event) {
+        //console.log("New color is: ", color);
+        setTempColor(tempColor);
+    }
+
+    // Cancel any change in Topic color
+    function handleColorCancel() {
+        setShowColorPicker(false);
+        handleColorPickClicked(false);
     }
 
     useEffect(() => {
         if (colorChangeButtonRef.current) {
            const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
-           setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999});
+           setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
         }
     }, [])
 
@@ -61,8 +68,11 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
                     The reason for this is to 'escape' the bounds of the parent */}
                 {showColorPicker&& createPortal(
                     <div className="PORTAL" style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
-                        <ChromePicker color={color} onChange={handleColorChange}/>
-                        <button>OK</button>
+                        <ChromePicker color={tempColor} onChange={handleColorChange}/>
+                        <div style={{backgroundColor: 'WHITE'}}>
+                            <button>OK</button>
+                            <button onClick={handleColorCancel}>Cancel</button>
+                        </div>
                     </div>,
                  document.body)}
                  {/* type="button" prevents the "Please fill out this field" warning */}

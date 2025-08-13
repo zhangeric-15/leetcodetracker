@@ -5,7 +5,6 @@ import TopicMenuOption from "./TopicMenuOption";
 import TopicCreateOption from "./TopicCreateOption";
 
 function TopicDropDown() {
-    const dropdownRef = useRef();
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
     const [selectedTopics, setSelectedTopics] = useState([]);
     // SOURCE OF TRUTH - topics array from the data base
@@ -42,6 +41,8 @@ function TopicDropDown() {
         setTopicMenuOpen(true);
     }
 
+    // VERY IMPORTANT HANDLER - We need to set the isColorPickerOpen reference varaible because the color picker has been PORTALED elsewhere in the DOM.
+    // As a result, clicking anywhere in the Color Picker (located in the child TopicMenuOption) will trigger entire topic dropdown to close (because the color picker is technically OUTSIDE this component).
     function handleColorPickClicked(isOpen) {
         isColorPickerOpen.current = isOpen;
     }
@@ -142,8 +143,6 @@ function TopicDropDown() {
         setFilteredTopics(searchedTopics);
         setExactSearchMatch(exactMatch);
     }
-
-    console.log("COLOR PICK CLICKED: ", isColorPickerOpen);
     
     return (
         <div className="dropdown-container">
