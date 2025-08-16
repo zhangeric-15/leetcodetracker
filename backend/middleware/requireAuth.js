@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 /* 
-    IMPORTANT Intro information:
+    IMPORTANT Intro information - for utilizing LOCAL STORAGE:
     When sending a fetch request from the FRONT-END, the request object that gets passed in is in the format of..
 
     const response = await fetch('/api/protected', {

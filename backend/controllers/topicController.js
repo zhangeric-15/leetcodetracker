@@ -47,6 +47,30 @@ async function deleteTopic(req, res) {
     }
 }
 
+// Update an EXISTING topic's color
+async function updateTopicColor(req, res) {
+    const userId = req.user;
+    const topicId = req.params.topicId;
+    if (!mongoose.Types.ObjectId.isValid(topicId)){
+        return res.status(400).json({error: "Topic Color Update Error - Not a valid ID for topicId"});
+    }
+    try {
+        // IMPORTANT CHECKS
+        // 1. Check if Topic document belongs to the LOGGED IN user and has the matching topicId
+        const topic = await Topic.findOne({_id: topicId, user: userId});
+        if (!topic) {
+            return res.status(404).json({error: "Topic not found"});
+        }
+        if (userId.toString() !== topic.user.toString()) {
+            return res.status(403).json({error: "You do not have permission to update this topic"});
+        } 
+        const updatedTopic = await Topic.findByIdAndUpdate(topicId, req.body, {new: true, runValidators: true});
+        return res.status(200).json(updatedTopic);
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+}
+
 module.exports = {
     addTopic,
     getAllTopics,
