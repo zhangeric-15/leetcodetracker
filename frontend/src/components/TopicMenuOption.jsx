@@ -39,9 +39,9 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
     }
 
     // Handle user attempting to change color of topic. Setting the new color as TEMP until User confirms selection
-    function handleColorChange(tempColor, event) {
+    function handleColorChange(selectedColor, event) {
         //console.log("New color is: ", color);
-        setTempColor(tempColor);
+        setTempColor(selectedColor.hex);
     }
 
     // Cancel any change in Topic color
@@ -59,15 +59,15 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
 
     return (
         <div className="dropdown-menu-option" onClick={handleSelectedTopic} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>
-            <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+            <span className="tag" style={{backgroundColor: showColorPicker ? tempColor : color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span>
             <div style={{display: 'flex'}}>
                 <button ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
                 {/* We need to create a PORTAL here to teleport the React Element returned by createPortal to another place in the DOM.
-                    The reason for this is to 'escape' the bounds of the parent */}
+                    The reason for this is to 'escape' the bounds of the parent, especially when dealing with z-index. */}
                 {showColorPicker&& createPortal(
-                    <div className="PORTAL" style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
+                    <div style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
                         <ChromePicker color={tempColor} onChange={handleColorChange}/>
                         <div style={{backgroundColor: 'WHITE'}}>
                             <button>OK</button>
