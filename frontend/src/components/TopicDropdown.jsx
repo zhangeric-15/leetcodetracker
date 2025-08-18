@@ -122,9 +122,9 @@ function TopicDropDown() {
     function createDropdownMenuOption() {
         return filteredTopics.map(topic => {
             return (
-                <TopicMenuOption key={topic._id} topic={topic} handleSelection={handleSelectedTopic} 
-                    isSelected={selectedTopics.includes(topic)} handleDeletion={handleTopicDeletion}
-                    handleColorPickClicked={handleColorPickClicked}/>
+                <TopicMenuOption key={topic._id} topic={topic} onSelection={handleSelectedTopic} 
+                    isSelected={selectedTopics.includes(topic)} onDeletion={handleTopicDeletion}
+                    onColorPickClicked={handleColorPickClicked}/>
             )
         })
     }

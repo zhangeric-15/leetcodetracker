@@ -74,5 +74,6 @@ async function updateTopicColor(req, res) {
 module.exports = {
     addTopic,
     getAllTopics,
-    deleteTopic
+    deleteTopic,
+    updateTopicColor
 };

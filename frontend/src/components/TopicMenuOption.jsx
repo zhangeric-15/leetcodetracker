@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { ChromePicker } from "react-color";
 import { createPortal } from "react-dom";
 
-function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, handleColorPickClicked}) {
+function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPickClicked}) {
     const [color, setColor] = useState(topic.color);
     const [tempColor, setTempColor] = useState(topic.color);
     const [showColorPicker, setShowColorPicker] = useState(false);
@@ -19,23 +19,23 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
                 credentials: 'include'
             });
             if (response.ok) {
-                handleDeletion(topic);
+                onDeletion(topic);
             }
         } catch(error) {
             console.log('Topic deletion error');
         }
-        handleDeletion(topic);
+        onDeletion(topic);
     }
 
     function handleSelectedTopic(event) {
         event.stopPropagation();
-        handleSelection(topic);
+        onSelection(topic);
     }
 
     function handleChangeColorButtonClicked(event) {
         event.stopPropagation();
         setShowColorPicker(true);
-        handleColorPickClicked(true);
+        onColorPickClicked(true);
     }
 
     // Handle user attempting to change color of topic. Setting the new color as TEMP until User confirms selection
@@ -47,7 +47,7 @@ function TopicMenuOption({ topic, handleSelection, isSelected, handleDeletion, h
     // Cancel any change in Topic color
     function handleColorCancel() {
         setShowColorPicker(false);
-        handleColorPickClicked(false);
+        onColorPickClicked(false);
     }
 
     useEffect(() => {
