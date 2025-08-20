@@ -2,14 +2,13 @@ import { useRef, useState, useEffect } from "react";
 import { ChromePicker } from "react-color";
 import { createPortal } from "react-dom";
 
-function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPickClicked}) {
+function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPickClicked, onColorChange}) {
     const [color, setColor] = useState(topic.color);
     const [tempColor, setTempColor] = useState(topic.color);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const colorChangeButtonRef = useRef();
     const [colorPickerStyle, setColorPickerStyle] = useState();
 
-    // TODO: Implement
     async function handleDeleteTopic(event) {
         // Prevents event from BUBBLING UP to parent
         event.stopPropagation();
@@ -39,15 +38,44 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
     }
 
     // Handle user attempting to change color of topic. Setting the new color as TEMP until User confirms selection
-    function handleColorChange(selectedColor, event) {
+    function handleTempColorChange(selectedColor, event) {
         //console.log("New color is: ", color);
         setTempColor(selectedColor.hex);
     }
 
-    // Cancel any change in Topic color
-    function handleColorCancel() {
+    function closeColorPicker() {
         setShowColorPicker(false);
         onColorPickClicked(false);
+    }
+
+    // Cancel any change in Topic color
+    function handleColorCancel() {
+        closeColorPicker();
+    }
+
+    async function handleColorConfirm() {
+        closeColorPicker();
+        try {
+            const response = await fetch(`http://localhost:5001/api/topics/${topic._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({color: tempColor})
+            });
+            const updatedTopic = await response.json();
+            if (response.ok) {
+                setColor(updatedTopic.color);
+            } else {
+                console.log("Failed response to update Topic color: ", updatedTopic.error);
+                alert(`Unable to update Topic color: ${updatedTopic.error}`);
+            }
+
+        } catch(error) {
+            console.log("Unable to send PATCH request to update Topic Color");
+            alert(`Unable to send PATCH request to update Topic Color ${error}`);
+        }
     }
 
     useEffect(() => {
@@ -68,9 +96,9 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
                     The reason for this is to 'escape' the bounds of the parent, especially when dealing with z-index. */}
                 {showColorPicker&& createPortal(
                     <div style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
-                        <ChromePicker color={tempColor} onChange={handleColorChange}/>
+                        <ChromePicker color={tempColor} onChange={handleTempColorChange}/>
                         <div style={{backgroundColor: 'WHITE'}}>
-                            <button>OK</button>
+                            <button onClick={handleColorConfirm}>OK</button>
                             <button onClick={handleColorCancel}>Cancel</button>
                         </div>
                     </div>,

@@ -15,6 +15,7 @@ function TopicDropDown() {
     const [exactSearchMatch, setExactSearchMatch] = useState(false);
     // Check if color picker is open. If it is, we don't want any clicks on it to close the form (since the color picker is PORTALED somewhere else in the DOM)
     const isColorPickerOpen = useRef(false);
+
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
     // Updating the object's 'current' property will NOT trigger a re-render. This is a variable that doesn't change during re-renders.
@@ -30,6 +31,7 @@ function TopicDropDown() {
     }, [])
 
     useEffect(() => {
+        // if there's nothing in the search field, reset
         if (!topicSearchValue) {
             // Reset filteredTopics to original context state
             setFilteredTopics(topics)
@@ -46,6 +48,11 @@ function TopicDropDown() {
     function handleColorPickClicked(isOpen) {
         isColorPickerOpen.current = isOpen;
     }
+
+    function handleColorChange(updatedTopic) {
+        dispatch({type: 'SET_TOPIC_COLOR', payload: updatedTopic});
+    }
+
 
     // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
     function handleSelectedTopic(topic) {
@@ -82,6 +89,7 @@ function TopicDropDown() {
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu
+    // IMPORTANT NOTE - The color picker for each tag is considered OUTSIDE the dropdown (since it was portaled elsewhere in the DOM)
     function handleClickOutside(event) {
         // dropDownMenuRef.current.contains(event.target) checks if the user clicked INSIDE the dropdown menu
         // Adding a ! means we want to make sure the user clicked outside so we can CLOSE it
@@ -124,7 +132,7 @@ function TopicDropDown() {
             return (
                 <TopicMenuOption key={topic._id} topic={topic} onSelection={handleSelectedTopic} 
                     isSelected={selectedTopics.includes(topic)} onDeletion={handleTopicDeletion}
-                    onColorPickClicked={handleColorPickClicked}/>
+                    onColorPickClicked={handleColorPickClicked} onColorChange={handleColorChange}/>
             )
         })
     }

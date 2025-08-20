@@ -25,7 +25,13 @@ function topicReducer(state, action) {
             return {
                 topics: [...state.topics, newTopic]
             };
-
+        case 'SET_TOPIC_COLOR':
+            return state.topics.map(topic => {
+                if (topic._id == action.payload._id) {
+                    return {...topic, color: action.payload.color};
+                }
+                return topic;
+            });
         default:
             return state; 
     }
