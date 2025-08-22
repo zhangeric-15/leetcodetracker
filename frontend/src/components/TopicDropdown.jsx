@@ -35,7 +35,14 @@ function TopicDropDown() {
         if (!topicSearchValue) {
             // Reset filteredTopics to original context state
             setFilteredTopics(topics)
-        }
+        } 
+        // TODO: Potentially remove else case later
+        // else {
+        //     const updatedFilteredTopics = topics.filter(topic => filteredTopics.includes(topic._id));
+        //     const updatedSelectedTopics = topics.filter(topic => selectedTopics.includes(topic._id));
+        //     setFilteredTopics(updatedFilteredTopics);
+        //     setSelectedTopics(updatedSelectedTopics);
+        // }
     }, [topics]);
 
     function handleOpeningDropdown() {
@@ -63,8 +70,10 @@ function TopicDropDown() {
 
     // Handle DELETING Topics permanently 
     function handleTopicDeletion(deletedTopic) {
+        // Update the Selected and Filtered topics list after deleting a topic
         const updatedSelectedTopics = selectedTopics.filter(selectedTopic => selectedTopic._id !== deletedTopic._id);
         const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic._id !== deletedTopic._id);
+        // Don't forget to remove any Topics that were selected 
         setSelectedTopics(updatedSelectedTopics);
         dispatch({type: 'DELETE_TOPIC', payload: deletedTopic});
         // If there's no more filtered topics, we should reset to context topics state

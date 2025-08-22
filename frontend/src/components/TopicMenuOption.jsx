@@ -67,6 +67,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
             const updatedTopic = await response.json();
             if (response.ok) {
                 setColor(updatedTopic.color);
+                onColorChange(updatedTopic);
             } else {
                 console.log("Failed response to update Topic color: ", updatedTopic.error);
                 alert(`Unable to update Topic color: ${updatedTopic.error}`);
