@@ -54,7 +54,6 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
     }
 
     async function handleColorConfirm() {
-        closeColorPicker();
         try {
             const response = await fetch(`http://localhost:5001/api/topics/${topic._id}`, {
                 method: 'PATCH',
@@ -66,6 +65,8 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
             });
             const updatedTopic = await response.json();
             if (response.ok) {
+                // IMPORTANT - This fix resolved an issue where the OLD Topic color would flicker and then resolve into the NEW topic color. 
+                closeColorPicker();
                 setColor(updatedTopic.color);
                 onColorChange(updatedTopic);
             } else {
@@ -81,6 +82,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
 
     useEffect(() => {
         if (colorChangeButtonRef.current) {
+            // This essentially gets the position of the Change Color button
            const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
            setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
         }

@@ -13,7 +13,7 @@ function TopicDropDown() {
     const [topicSearchValue, setTopicSearchValue] = useState("");
     const [filteredTopics, setFilteredTopics] = useState([]);
     const [exactSearchMatch, setExactSearchMatch] = useState(false);
-    // Check if color picker is open. If it is, we don't want any clicks on it to close the form (since the color picker is PORTALED somewhere else in the DOM)
+    // Check if color picker is open. If it is, we don't want any clicks on it to close the dropdown (since the color picker is PORTALED somewhere else in the DOM)
     const isColorPickerOpen = useRef(false);
 
     // IMPORTANT: 
@@ -31,18 +31,21 @@ function TopicDropDown() {
     }, [])
 
     useEffect(() => {
-        // if there's nothing in the search field, reset
-        if (!topicSearchValue) {
-            // Reset filteredTopics to original context state
-            setFilteredTopics(topics)
-        } 
-        // TODO: Potentially remove else case later
-        // else {
-        //     const updatedFilteredTopics = topics.filter(topic => filteredTopics.includes(topic._id));
-        //     const updatedSelectedTopics = topics.filter(topic => selectedTopics.includes(topic._id));
-        //     setFilteredTopics(updatedFilteredTopics);
-        //     setSelectedTopics(updatedSelectedTopics);
-        // }
+        // Important Edge case - Topics can be null during the FIRST render (see TopicContxtProvider component)
+        if (topics !== null) {
+            // if there's nothing in the search field, reset
+            if (!topicSearchValue) {
+                // Reset filteredTopics to original context state
+                setFilteredTopics(topics)
+            } 
+            // TODO: Potentially remove else case later
+            // else {
+            //     const updatedFilteredTopics = topics.filter(topic => filteredTopics.includes(topic._id));
+            //     setFilteredTopics(updatedFilteredTopics);
+            // }
+            // const updatedSelectedTopics = topics.filter(topic => selectedTopics.includes(topic._id));
+            // setSelectedTopics(updatedSelectedTopics);
+        }
     }, [topics]);
 
     function handleOpeningDropdown() {
