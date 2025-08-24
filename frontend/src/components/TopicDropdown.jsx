@@ -31,25 +31,50 @@ function TopicDropDown() {
     }, [])
 
     useEffect(() => {
-        // Important Edge case - Topics can be null during the FIRST render (see TopicContxtProvider component)
+        // Important Edge case - Topics can be null during the FIRST render b/c this useEffect will run BEFORE TopicContextProvider's useEffect.
         if (topics !== null) {
+            const topicsIdMap = new Map
             // if there's nothing in the search field, reset
             if (!topicSearchValue) {
                 // Reset filteredTopics to original context state
                 setFilteredTopics(topics)
             } 
-            // TODO: Potentially remove else case later
-            // else {
-            //     const updatedFilteredTopics = topics.filter(topic => filteredTopics.includes(topic._id));
-            //     setFilteredTopics(updatedFilteredTopics);
-            // }
-            // const updatedSelectedTopics = topics.filter(topic => selectedTopics.includes(topic._id));
-            // setSelectedTopics(updatedSelectedTopics);
+            else {
+                const updatedFilteredTopics = updateFilteredTopics(topics, filteredTopics);
+                setFilteredTopics(updatedFilteredTopics);
+            }
+            const updatedSelectedTopics = updateSelectedTopics(topics, selectedTopics);
+            setSelectedTopics(updatedSelectedTopics);
         }
     }, [topics]);
 
+    // Replace any old Filtered Topics with its corresponding new/updated Topic object
+    function updateFilteredTopics(newTopics, oldFilteredTopics) {
+        const updatedFilteredTopics = []
+        oldFilteredTopics.forEach(oldTopic => {
+            const updatedTopic = newTopics.find(newTopic => newTopic._id === oldTopic._id)
+            if (updatedTopic) {
+                updatedFilteredTopics.push(updatedTopic);
+            }
+        });
+        return updatedFilteredTopics;
+    }
+
+    // Replace any old Selected Topics with its corresponding new/updated Topic object
+    function updateSelectedTopics(newTopics, oldSelectedTopics) {
+        const updatedSelectedTopics = []
+        oldSelectedTopics.forEach(oldTopic => {
+            const updatedTopic = newTopics.find(newTopic => newTopic._id === oldTopic._id)
+            if (updatedTopic) {
+                updatedSelectedTopics.push(updatedTopic);
+            }
+        });
+        return updatedSelectedTopics;
+    }
+    
+    
     function handleOpeningDropdown() {
-        console.log("Form opened");
+        console.log("Topic Dropwdown opened");
         setTopicMenuOpen(true);
     }
 
@@ -121,7 +146,7 @@ function TopicDropDown() {
 
     function createSelectedTopicTags() {
         return selectedTopics.map(selectedTopic => (
-            <span className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+            <span key={selectedTopic._id} className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {selectedTopic.topicName}
             </span>
         ))
@@ -129,7 +154,7 @@ function TopicDropDown() {
 
     function createRemovableSelectedTopicTags() {
         return selectedTopics.map(selectedTopic => (
-            <span className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+            <span key={selectedTopic._id} className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {selectedTopic.topicName}
                 <button onClick={(event) => handleRemoveSelectedTopic(event, selectedTopic)}>
                     <i className="fa-solid fa-x"></i>
