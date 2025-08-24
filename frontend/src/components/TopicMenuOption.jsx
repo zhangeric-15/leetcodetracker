@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { ChromePicker } from "react-color";
-import { createPortal } from "react-dom";
+import ColorPicker from "./ColorPicker";
 
 function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPickClicked, onColorChange}) {
     const [color, setColor] = useState(topic.color);
@@ -95,17 +94,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
             </span>
             <div style={{display: 'flex'}}>
                 <button ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
-                {/* We need to create a PORTAL here to teleport the React Element returned by createPortal to another place in the DOM.
-                    The reason for this is to 'escape' the bounds of the parent, especially when dealing with z-index. */}
-                {showColorPicker&& createPortal(
-                    <div style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
-                        <ChromePicker color={tempColor} onChange={handleTempColorChange}/>
-                        <div style={{backgroundColor: 'WHITE'}}>
-                            <button onClick={handleColorConfirm}>OK</button>
-                            <button onClick={handleColorCancel}>Cancel</button>
-                        </div>
-                    </div>,
-                 document.body)}
+                {showColorPicker && <ColorPicker onChange={handleTempColorChange} onConfirm={handleColorConfirm} onCancel={handleColorCancel} colorPickerStyle={colorPickerStyle} currentColor={tempColor}/>}
                  {/* type="button" prevents the "Please fill out this field" warning */}
                 <button type="button" onClick={handleDeleteTopic} style={{height: '20px', marginTop: '10px'}}>Delete</button>
             </div>
