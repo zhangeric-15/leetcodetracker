@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import ColorPicker from "./ColorPicker";
 
 // GENERATED FROM GOOGLE AI 
 function generateRandomColor() {
@@ -17,9 +18,21 @@ function generateRandomColor() {
 }
 
 
-function TopicCreateOption({ value, handleNewTopic }) {
-    // IMPORTANT - the function inside useState to generate the random color only RUNS ONCE when the component is created
+function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
+    // IMPORTANT Lazy initialization - the function inside useState generates the random color only RUNS ONCE when the component is created
     const [color, setColor] = useState(() => generateRandomColor());
+    const [tempColor, setTempColor] = useState();
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const colorChangeButtonRef = useRef();
+    const [colorPickerStyle, setColorPickerStyle] = useState();
+
+    useEffect(() => {
+            if (colorChangeButtonRef.current) {
+                // This essentially gets the position of the Change Color button
+            const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
+            setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
+            }
+    }, [])
 
     async function handleClick(event) {
         event.stopPropagation();
@@ -35,27 +48,54 @@ function TopicCreateOption({ value, handleNewTopic }) {
                 body: JSON.stringify(newTopic)
             });
             const topic = await response.json();
-            handleNewTopic(newTopic)
+            onCreateTopic(topic)
         } catch(error) {
             console.log("Add Topic ERROR - Unable to send POST request to add new topic");
         }
     }
 
+
+    // Handle user attempting to change color of topic. Setting the new color as TEMP until User confirms selection
+    function handleTempColorChange(selectedColor, event) {
+        //console.log("New color is: ", color);
+        setTempColor(selectedColor.hex);
+    }
+
+    function closeColorPicker() {
+        setShowColorPicker(false);
+        onColorPickClicked(false);
+    }
+
+    // Cancel any change in Topic color
+    function handleColorCancel() {
+        closeColorPicker();
+    }
+
+    function handleChangeColorButtonClicked(event) {
+        event.stopPropagation();
+        setShowColorPicker(true);
+        onColorPickClicked(true);
+    }
+
+
+    function handleColorConfirm() {
+        closeColorPicker();
+        setColor(tempColor);
+    }
+
     return (
-        <div className="dropdown-menu-option" onClick={handleClick}>
+        <div className="dropdown-menu-option" onClick={handleClick} style={{backgroundColor: 'white'}}>
             <div>
                 <span>
                     CREATE
                 </span>
-                <span className="tag" style={{backgroundColor: color, borderRadius: '8px', padding: '6px', display: 'inline', marginLeft: "12px"}}>
+                <span className="tag" style={{backgroundColor: showColorPicker ? tempColor : color, marginLeft: '12px', borderRadius: '8px', padding: '6px', display: 'inline'}}>
                     {value}
                 </span>
             </div>
-            <div>
-                <input
-                className="colorSelectorInput"
-                type="color"
-                />
+            <div style={{display: 'flex'}}>
+                <button ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
+                {showColorPicker && <ColorPicker onChange={handleTempColorChange} onConfirm={handleColorConfirm} onCancel={handleColorCancel} colorPickerStyle={colorPickerStyle} currentColor={tempColor}/>}
             </div>
         </div>
     );

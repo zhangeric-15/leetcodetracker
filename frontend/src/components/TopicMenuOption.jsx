@@ -8,6 +8,14 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
     const colorChangeButtonRef = useRef();
     const [colorPickerStyle, setColorPickerStyle] = useState();
 
+    useEffect(() => {
+        if (colorChangeButtonRef.current) {
+            // This essentially gets the position of the Change Color button. We want to open the color picker right at this location.
+           const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
+           setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
+        }
+    }, [])
+
     async function handleDeleteTopic(event) {
         // Prevents event from BUBBLING UP to parent
         event.stopPropagation();
@@ -78,14 +86,6 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
             alert(`Unable to send PATCH request to update Topic Color ${error}`);
         }
     }
-
-    useEffect(() => {
-        if (colorChangeButtonRef.current) {
-            // This essentially gets the position of the Change Color button
-           const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
-           setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
-        }
-    }, [])
 
     return (
         <div className="dropdown-menu-option" onClick={handleSelectedTopic} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>

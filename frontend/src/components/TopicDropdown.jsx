@@ -175,7 +175,7 @@ function TopicDropDown() {
     }
 
     function createAddTopicOption() {
-        return <TopicCreateOption value={topicSearchValue} handleNewTopic={handleTopicCreation}/>
+        return <TopicCreateOption value={topicSearchValue} onCreateTopic={handleTopicCreation} onColorPickClicked={handleColorPickClicked} />
     }
 
     // Handles filtering the Topic Menu Options
