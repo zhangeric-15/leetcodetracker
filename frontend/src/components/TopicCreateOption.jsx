@@ -21,7 +21,7 @@ function generateRandomColor() {
 function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
     // IMPORTANT Lazy initialization - the function inside useState generates the random color only RUNS ONCE when the component is created
     const [color, setColor] = useState(() => generateRandomColor());
-    const [tempColor, setTempColor] = useState();
+    const [tempColor, setTempColor] = useState(color);
     const [showColorPicker, setShowColorPicker] = useState(false);
     const colorChangeButtonRef = useRef();
     const [colorPickerStyle, setColorPickerStyle] = useState();

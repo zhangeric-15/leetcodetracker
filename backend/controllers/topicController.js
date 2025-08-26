@@ -11,7 +11,7 @@ async function addTopic(req, res) {
     const userId = req.user;
     try {
         const topic = await Topic.create({user: userId, topicName, color});
-        return res.status(200).json({topic})
+        return res.status(200).json(topic)
     } catch(error) {
         return res.status(500).json({error: error.message});
     }
