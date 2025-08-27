@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import useTopicContext from "../../hooks/useTopicContext";
-import { ChromePicker } from 'react-color';
 import TopicMenuOption from "./TopicMenuOption";
 import TopicCreateOption from "./TopicCreateOption";
 
@@ -28,7 +27,7 @@ function TopicDropDown() {
             console.log("REMOVING outside mousedown listener for Topic dropdown")
             document.removeEventListener('mousedown', handleClickOutside)
         })
-    }, [])
+    }, [topics])
 
     useEffect(() => {
         // Important Edge case - Topics can be null during the FIRST render b/c this useEffect will run BEFORE TopicContextProvider's useEffect.
@@ -135,6 +134,8 @@ function TopicDropDown() {
             setTopicMenuOpen(false);
             // Reset the search state
             setTopicSearchValue("");
+            // Reset Dropdown to contain all Topics
+            setFilteredTopics(topics);
         }
     }
 
