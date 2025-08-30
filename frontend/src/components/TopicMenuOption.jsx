@@ -30,7 +30,6 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
         } catch(error) {
             console.log('Topic deletion error');
         }
-        onDeletion(topic);
     }
 
     function handleSelectedTopic(event) {
