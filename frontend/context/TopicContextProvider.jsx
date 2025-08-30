@@ -4,12 +4,36 @@ import { createContext, useReducer, useEffect } from "react";
 export const TopicContext = createContext();
 
 function topicReducer(state, action) {
+    console.log('topicReducer triggered');
     switch (action.type) {
         // action.payload = list of topics
         case 'SET_TOPICS':
            return {
             topics: action.payload
            };
+        // action.payload = topic object being deleted
+        case 'DELETE_TOPIC':
+            console.log('DELETE TOPIC triggered');
+            const deletedTopic = action.payload;
+            return {
+                topics: state.topics.filter(topic => topic._id !== deletedTopic._id)
+            };
+        // action.payload = topic object that was created
+        case 'CREATE_TOPIC':
+            console.log('CREATE TOPIC triggered');
+            const newTopic = action.payload;
+            return {
+                topics: [...state.topics, newTopic]
+            };
+        case 'SET_TOPIC_COLOR':
+            return {
+                topics: state.topics.map(topic => {
+                if (topic._id == action.payload._id) {
+                    return {...topic, color: action.payload.color};
+                }
+                return topic;
+                })
+            };
         default:
             return state; 
     }
@@ -32,8 +56,7 @@ export function TopicContextProvider({ children }) {
             }
         }
         getTopics();
-    })
-
+    }, [])
     return (
         // value will be {topics, dispatch}
         <TopicContext.Provider value={{...state, dispatch}}>

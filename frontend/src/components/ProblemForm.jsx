@@ -18,11 +18,11 @@ function ProblemForm() {
             onChange={(e) => setEmail(e.target.value)}
             required/>
 
-            {/* <label>Difficulty:</label>
+            <label>Difficulty:</label>
             <input
             type="text"
             onChange={(e) => setPassword(e.target.value)}
-            /> */}
+            />
             
             <label>Topics:</label>
             <TopicContextProvider>

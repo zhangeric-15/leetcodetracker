@@ -94,11 +94,6 @@ input {
   flex-wrap: wrap;
 }
 
-/* Style for adding custom combobox for topics */
-.topicCombobox {
-  position: absolute;
-  display: none;
-}
 /* Style for tags */
 .tag {
   color: white;
@@ -133,6 +128,9 @@ input {
   max-height: 190px;
   overflow-y: auto;
   z-index: 9999;
+  gap: 15px;
+  background: white;
+  border: black;
 }
 
 .dropdown-menu-option {
@@ -140,8 +138,4 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.colorSelectorInput {
-  width: 50px;
 }
