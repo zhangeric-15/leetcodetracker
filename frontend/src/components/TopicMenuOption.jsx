@@ -61,6 +61,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
     }
 
     async function handleColorConfirm() {
+        // TODO: In the future, can add a check to see if the color changed. Then we won't need to send a PATCH request
         try {
             const response = await fetch(`http://localhost:5001/api/topics/${topic._id}`, {
                 method: 'PATCH',
@@ -93,7 +94,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
                 {topic.topicName}
             </span>
             <div style={{display: 'flex'}}>
-                <button ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
+                <button type="button" ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
                 {showColorPicker && <ColorPicker onChange={handleTempColorChange} onConfirm={handleColorConfirm} onCancel={handleColorCancel} colorPickerStyle={colorPickerStyle} currentColor={tempColor}/>}
                  {/* type="button" prevents the "Please fill out this field" warning */}
                 <button type="button" onClick={handleDeleteTopic} style={{height: '20px', marginTop: '10px'}}>Delete</button>
