@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import TopicDropDown from "./TopicDropdown";
 import { TopicContextProvider } from "../../context/TopicContextProvider";
 import useTopicContext from "../../hooks/useTopicContext";
+import DifficultyDropdown from "./DifficultyDropdown";
 
 function ProblemForm() {
     const [selectedTopics, setSelectedTopics] = useState([]);
@@ -34,7 +35,7 @@ function ProblemForm() {
         setSelectedTopics(updatedSelectedTopics);
     }
 
-        // Replace any old Selected Topics with its corresponding new/updated Topic object
+    // Replace any old Selected Topics with its corresponding new/updated Topic object
     function updateSelectedTopics(newTopics, oldSelectedTopics) {
         const updatedSelectedTopics = []
         oldSelectedTopics.forEach(oldTopic => {
@@ -58,10 +59,7 @@ function ProblemForm() {
             required/>
 
             <label>Difficulty:</label>
-            <input
-            type="text"
-            onChange={(e) => setPassword(e.target.value)}
-            />
+            <DifficultyDropdown/>
             
             <label>Topics:</label>
             <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
