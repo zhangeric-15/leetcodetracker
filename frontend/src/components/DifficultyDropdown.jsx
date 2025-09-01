@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onDifficultyRemoved}) {
+function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
     const [isDifficultyMenuOpen, setDifficultyMenuOpen] = useState(false);
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return (() => document.removeEventListener('mousedown', handleClickOutside));
+    })
 
     // IMPORTANT: 
     // Object returned by 'useRef' has a 'current' property. The initial value is set to the argument passed into 'useRef'
@@ -15,6 +19,12 @@ function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onD
         "UNKNOWN" : "Blue"
     }
 
+    function handleClickOutside(event) {
+        if (dropDownMenuRef.current && !dropDownMenuRef.current.contains(event.target)) {
+            setDifficultyMenuOpen(false);
+        }
+    }
+
     // Helper function for Difficulty and Understanding Tags. Convert Enums that are in ALL CAPS to readable words
     function convertEnumToString(words) {
         return words.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -22,22 +32,23 @@ function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onD
 
     function handleRemoveSelectedDifficulty(event) {
         event.stopPropagation();
-        onDifficultyRemoved();
-    }
-
-    function handleSelectedDifficulty(event, selectedDifficulty) {
-        event.stopPropagation();
-
+        onDifficultyChanged(null);
     }
 
     function handleOpeningDropdown() {
         setDifficultyMenuOpen(true);
     }
 
+    function handleSelectedDifficulty(event, selectedDifficulty) {
+        event.stopPropagation();
+        setDifficultyMenuOpen(false);
+        onDifficultyChanged(selectedDifficulty)
+    }
+
     function createRemovableSelectedDifficulty() {
         return (
-            <span className="tag" style={{backgroundColor: difficultyColor[problemDifficulty], borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                {convertEnumToString(problemDifficulty)}
+            <span className="tag" style={{backgroundColor: difficultyColor[difficulty], borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                {convertEnumToString(difficulty)}
                 <button onClick={(event) => handleRemoveSelectedDifficulty(event)}>
                     <i className="fa-solid fa-x"></i>
                 </button>
@@ -47,20 +58,12 @@ function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onD
 
     function createSelectedDifficulty() {
         return (
-            <span className="tag" style={{backgroundColor: difficultyColor[problemDifficulty], borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                {convertEnumToString(problemDifficulty)}
+            <span className="tag" style={{backgroundColor: difficultyColor[difficulty], borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                {convertEnumToString(difficulty)}
             </span>
         )
     }
 
-    // function createDropdownDifficultyOptions() {
-    //     <div className="dropdown-menu-option" onClick={handleSelectedDifficulty} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>
-    //         <span className="tag" style={{backgroundColor: "Green", borderRadius: '8px', padding: '6px', display: 'inline'}}>
-    //             {Easy}
-    //         </span>
-    //     </div>
-        
-    // }
 
     return (
         <div className="dropdown-container">
@@ -68,26 +71,26 @@ function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onD
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
                         <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
-                            {problemDifficulty !== null ? createRemovableSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
+                            {difficulty !== null ? createRemovableSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
                         </div>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        <div className="dropdown-menu-option" onClick={handleSelectedDifficulty} style={{backgroundColor: problemDifficulty === "EASY" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "EASY")} style={{backgroundColor: difficulty === "EASY" ? 'gray' : 'white'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["EASY"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Easy
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={handleSelectedDifficulty} style={{backgroundColor: problemDifficulty === "MEDIUM" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "MEDIUM")} style={{backgroundColor: difficulty === "MEDIUM" ? 'gray' : 'white'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["MEDIUM"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Medium
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={handleSelectedDifficulty} style={{backgroundColor: problemDifficulty === "HARD" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "HARD")} style={{backgroundColor: difficulty === "HARD" ? 'gray' : 'white'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["HARD"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Hard
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={handleSelectedDifficulty} style={{backgroundColor: problemDifficulty === "UNKNOWN" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "UNKNOWN")} style={{backgroundColor: difficulty === "UNKNOWN" ? 'gray' : 'white'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["UNKNOWN"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Unknown
                             </span>
@@ -96,7 +99,7 @@ function DifficultyDropdown({ problemDifficulty = null, onDifficultyChanged, onD
                 </div> 
             ) : 
             <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
-                {problemDifficulty !== null ? createSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
+                {difficulty !== null ? createSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
             </div>
             }
         </div>

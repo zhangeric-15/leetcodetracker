@@ -4,8 +4,15 @@ import { TopicContextProvider } from "../../context/TopicContextProvider";
 import useTopicContext from "../../hooks/useTopicContext";
 import DifficultyDropdown from "./DifficultyDropdown";
 
-function ProblemForm() {
+function ProblemForm({ problem = null }) {
     const [selectedTopics, setSelectedTopics] = useState([]);
+    const [selectedDifficulty, setSelectedDifficulty] = useState(() => {
+        if (problem !== null) {
+            return problem.difficulty;
+        } else {
+            return null;
+        }
+    })
     const {topics, dispatch} = useTopicContext();
 
     useEffect(() => {
@@ -20,6 +27,7 @@ function ProblemForm() {
         console.log("Problem form submitted");
     }
 
+    // Topic Handlers
     function handleTopicSelection(selectedTopic) {
         if (!selectedTopics.some(topic => topic._id === selectedTopic._id)) {
             setSelectedTopics(prev => [...prev, selectedTopic]);
@@ -47,6 +55,10 @@ function ProblemForm() {
         return updatedSelectedTopics;
     }
 
+    // Difficulty Handlers
+    function handleDifficultyChanged(difficulty) {
+        setSelectedDifficulty(difficulty);
+    }
 
     return (
         <form className="credentialsForm" onSubmit={handleSubmit}>
@@ -59,7 +71,7 @@ function ProblemForm() {
             required/>
 
             <label>Difficulty:</label>
-            <DifficultyDropdown/>
+            <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
             
             <label>Topics:</label>
             <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>

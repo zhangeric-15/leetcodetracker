@@ -64,6 +64,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
 
     // VERY IMPORTANT HANDLER - We need to set the isColorPickerOpen reference varaible because the color picker has been PORTALED elsewhere in the DOM.
     // As a result, clicking anywhere in the Color Picker (located in the child TopicMenuOption) will trigger entire topic dropdown to close (because the color picker is technically OUTSIDE this component).
+    // By setting isColorPickerOpen.current to TRUE, the dropdown will NOT close.
     function handleColorPickClicked(isOpen) {
         isColorPickerOpen.current = isOpen;
     }
