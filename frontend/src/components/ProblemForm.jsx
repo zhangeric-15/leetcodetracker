@@ -3,12 +3,20 @@ import TopicDropDown from "./TopicDropdown";
 import { TopicContextProvider } from "../../context/TopicContextProvider";
 import useTopicContext from "../../hooks/useTopicContext";
 import DifficultyDropdown from "./DifficultyDropdown";
+import UnderstandingDropdown from "./UnderstandingDropdown";
 
 function ProblemForm({ problem = null }) {
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [selectedDifficulty, setSelectedDifficulty] = useState(() => {
         if (problem !== null) {
             return problem.difficulty;
+        } else {
+            return null;
+        }
+    })
+    const [selectedUnderstanding, setSelectedUnderstanding] = useState(() => {
+        if (problem !== null) {
+            return problem.understanding;
         } else {
             return null;
         }
@@ -60,6 +68,11 @@ function ProblemForm({ problem = null }) {
         setSelectedDifficulty(difficulty);
     }
 
+    // Understanding handlers
+    function handleUnderstandingChanged(understanding) {
+        setSelectedUnderstanding(understanding);
+    }
+
     return (
         <form className="credentialsForm" onSubmit={handleSubmit}>
             <h2> Add Problem </h2>
@@ -72,6 +85,9 @@ function ProblemForm({ problem = null }) {
 
             <label>Difficulty:</label>
             <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+
+            <label>Understanding: </label>
+            <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
             
             <label>Topics:</label>
             <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
