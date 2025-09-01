@@ -4,8 +4,24 @@ import { TopicContextProvider } from "../../context/TopicContextProvider";
 import useTopicContext from "../../hooks/useTopicContext";
 import DifficultyDropdown from "./DifficultyDropdown";
 import UnderstandingDropdown from "./UnderstandingDropdown";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 function ProblemForm({ problem = null }) {
+    const [problemName, setProblemName] = useState(() => {
+        if (problem !== null) {
+            return problem.name;
+        } else {
+            return null;
+        }
+    })
+    const [url, setUrl] = useState(() => {
+        if (problem !== null) {
+            return problem.url;
+        } else {
+            return null;
+        }
+    })
     const [selectedTopics, setSelectedTopics] = useState([]);
     const [selectedDifficulty, setSelectedDifficulty] = useState(() => {
         if (problem !== null) {
@@ -21,6 +37,7 @@ function ProblemForm({ problem = null }) {
             return null;
         }
     })
+    const [selectedDate, setSelectedDate] = useState(new Date());
     const {topics, dispatch} = useTopicContext();
 
     useEffect(() => {
@@ -33,6 +50,7 @@ function ProblemForm({ problem = null }) {
 
     function handleSubmit() {
         console.log("Problem form submitted");
+        
     }
 
     // Topic Handlers
@@ -76,21 +94,46 @@ function ProblemForm({ problem = null }) {
     return (
         <form className="credentialsForm" onSubmit={handleSubmit}>
             <h2> Add Problem </h2>
-            <label>Problem Name:</label>
-            <input
-            type="text"
-            placeholder="Problem Name"
-            onChange={(e) => setEmail(e.target.value)}
-            required/>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>Problem Name:</label>
+                <input
+                type="text"
+                placeholder="Problem Name"
+                onChange={(e) => setEmail(e.target.value)}
+                required/>
+            </div>
 
-            <label>Difficulty:</label>
-            <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>URL: </label>
+                <input
+                type="text"
+                placeholder="URL"
+                onChange={(e) => setEmail(e.target.value)}
+                required/>
+            </div>
 
-            <label>Understanding: </label>
-            <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
-            
-            <label>Topics:</label>
-            <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>Difficulty:</label>
+                <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>Understanding: </label>
+                <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>Topics:</label>
+                <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
+            </div>
+
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+                <label>Date solved: </label>
+                <DatePicker selected={selectedDate} onChange = {(date) => setSelectedDate(date)}/>
+                {/* <input
+                type="date"
+                /> */}
+            </div>
             <div>
                 <button>Add</button>
                 <button>Cancel</button>
