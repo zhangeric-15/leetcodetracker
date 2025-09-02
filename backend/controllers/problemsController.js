@@ -28,7 +28,9 @@ async function addProblem(req, res) {
     }
     try { 
         const problem = await Problem.create({ user, date, problemName, url, difficulty, understanding, topics});
-        return res.status(200).json(problem);
+        // We need to refetch the problem recently added to populate the TOPIC field with its entire object (not just its ID).
+        const addedProblem = await Problem.findById(problem._id).populate('topics');
+        return res.status(200).json(addedProblem);
     } catch(error) {
         return res.status(500).json({ error: error.message });
     }

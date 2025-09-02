@@ -48,7 +48,11 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
                 body: JSON.stringify(newTopic)
             });
             const topic = await response.json();
-            onCreateTopic(topic)
+            if (response.ok) {
+                onCreateTopic(topic)
+            } else {
+                console.log("Add Topic ERROR - Bad response: ", topic);
+            }
         } catch(error) {
             console.log("Add Topic ERROR - Unable to send POST request to add new topic");
         }

@@ -6,6 +6,7 @@ import DifficultyDropdown from "./DifficultyDropdown";
 import UnderstandingDropdown from "./UnderstandingDropdown";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { useProblemContext } from "../../hooks/useProblemContext";
 
 function ProblemForm({ problem = null }) {
     const [problemName, setProblemName] = useState(() => {
@@ -38,7 +39,8 @@ function ProblemForm({ problem = null }) {
         }
     })
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const {topics, dispatch} = useTopicContext();
+    const {topics} = useTopicContext();
+    const {problems, dispatch: problemDispatch} = useProblemContext();
 
     useEffect(() => {
         if (topics !== null) {
@@ -47,9 +49,51 @@ function ProblemForm({ problem = null }) {
         }
     }, [topics])
 
+    function isProblemValid() {
+        if (problemName && url && selectedTopics && selectedDate) {
+            return true;
+        }
+    }
 
-    function handleSubmit() {
+    async function addProblem(newProblem) {
+        try {
+            const response = await fetch('http://localhost:5001/api/problems/addProblem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(newProblem)
+            });
+            const problemData = await response.json();
+            if (!response.ok) {
+                throw new Error(`Unable to add problem due to response status: ${response.status} with message: ${problemData.error}`);
+            }
+            problemDispatch({type: 'ADD_PROBLEM', payload: problemData});
+
+
+        } catch(error) {
+            console.log("Unable to add problem due to error: ", error);
+        }
+    }
+
+    function handleSubmit(event) {
+        // Prevent reloading the page when form is submitted.
+        event.preventDefault();
+        const updatedProblem = {
+            problemName,
+            url,
+            difficulty: selectedDifficulty,
+            understanding: selectedUnderstanding,
+            topics: selectedTopics,
+            date: selectedDate
+        };
         console.log("Problem form submitted");
+        if (isProblemValid()) {
+            addProblem(updatedProblem);
+        } else {
+            console.log("Problem is NOT valid");
+        }
         
     }
 
@@ -94,49 +138,51 @@ function ProblemForm({ problem = null }) {
     return (
         <form className="credentialsForm" onSubmit={handleSubmit}>
             <h2> Add Problem </h2>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>Problem Name:</label>
-                <input
-                type="text"
-                placeholder="Problem Name"
-                onChange={(e) => setEmail(e.target.value)}
-                required/>
-            </div>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>URL: </label>
-                <input
-                type="text"
-                placeholder="URL"
-                onChange={(e) => setEmail(e.target.value)}
-                required/>
-            </div>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>Difficulty:</label>
-                <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
-            </div>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>Understanding: </label>
-                <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
-            </div>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>Topics:</label>
-                <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
-            </div>
-
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-                <label>Date solved: </label>
-                <DatePicker selected={selectedDate} onChange = {(date) => setSelectedDate(date)}/>
-                {/* <input
-                type="date"
-                /> */}
-            </div>
             <div>
-                <button>Add</button>
-                <button>Cancel</button>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>Problem Name:</label>
+                    <input
+                    type="text"
+                    placeholder="Problem Name"
+                    onChange={(e) => setProblemName(e.target.value)}
+                    required/>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>URL: </label>
+                    <input
+                    type="text"
+                    placeholder="URL"
+                    onChange={(e) => setUrl(e.target.value)}
+                    required/>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>Difficulty:</label>
+                    <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>Understanding: </label>
+                    <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>Topics:</label>
+                    <TopicDropDown selectedTopics={selectedTopics} onTopicSelection={handleTopicSelection} onSelectedTopicRemoved={handleSelectedTopicRemoved} onSelectedTopicDeleted={handleSelectedTopicDeletion}/>
+                </div>
+
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    <label>Date solved: </label>
+                    <DatePicker selected={selectedDate} onChange = {(date) => setSelectedDate(date)}/>
+                    {/* <input
+                    type="date"
+                    /> */}
+                </div>
+                <div>
+                    <button>Add</button>
+                    <button>Cancel</button>
+                </div>
             </div>
         </form>
     )
