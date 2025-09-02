@@ -23,7 +23,7 @@ const problemSchema = new mongoose.Schema({
     },
     understanding: {
         type: String,
-        enum: ['UNDERSTAND', 'MEDIUM', 'NEEDS_REVIEW'],
+        enum: ['UNDERSTAND', 'MEDIUM', 'NEEDS_REVIEW', 'TO_DO'],
         required: true
     },
     // Referencing the Topic's _id here. topics will contain a list of Topic objects defined in topicModel.js.

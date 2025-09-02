@@ -5,7 +5,11 @@ export const ProblemContext = createContext();
 // action takes {type, payload}
 function problemReducer(state, action) {
     switch (action.type) {
-        case 'CREATE_PROBLEM':
+        // action.payload = new problem object
+        case 'ADD_PROBLEM':
+            return {
+                problems: [...state.problems, action.payload]
+            };
         // action.payload = an array of problems
         case 'SET_PROBLEMS':
             return {

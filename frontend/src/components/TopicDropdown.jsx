@@ -3,9 +3,9 @@ import useTopicContext from "../../hooks/useTopicContext";
 import TopicMenuOption from "./TopicMenuOption";
 import TopicCreateOption from "./TopicCreateOption";
 
-function TopicDropDown() {
+function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemoved, onSelectedTopicDeleted }) {
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
-    const [selectedTopics, setSelectedTopics] = useState([]);
+
     // SOURCE OF TRUTH - topics array from the data base
     const {topics, dispatch} = useTopicContext();
     // Keeps track of the search value the user inputed 
@@ -32,7 +32,6 @@ function TopicDropDown() {
     useEffect(() => {
         // Important Edge case - Topics can be null during the FIRST render b/c this useEffect will run BEFORE TopicContextProvider's useEffect.
         if (topics !== null) {
-            const topicsIdMap = new Map
             // if there's nothing in the search field, reset
             if (!topicSearchValue) {
                 // Reset filteredTopics to original context state
@@ -42,8 +41,6 @@ function TopicDropDown() {
                 const updatedFilteredTopics = updateFilteredTopics(topics, filteredTopics);
                 setFilteredTopics(updatedFilteredTopics);
             }
-            const updatedSelectedTopics = updateSelectedTopics(topics, selectedTopics);
-            setSelectedTopics(updatedSelectedTopics);
         }
     }, [topics]);
 
@@ -58,18 +55,6 @@ function TopicDropDown() {
         });
         return updatedFilteredTopics;
     }
-
-    // Replace any old Selected Topics with its corresponding new/updated Topic object
-    function updateSelectedTopics(newTopics, oldSelectedTopics) {
-        const updatedSelectedTopics = []
-        oldSelectedTopics.forEach(oldTopic => {
-            const updatedTopic = newTopics.find(newTopic => newTopic._id === oldTopic._id)
-            if (updatedTopic) {
-                updatedSelectedTopics.push(updatedTopic);
-            }
-        });
-        return updatedSelectedTopics;
-    }
     
     
     function handleOpeningDropdown() {
@@ -79,6 +64,7 @@ function TopicDropDown() {
 
     // VERY IMPORTANT HANDLER - We need to set the isColorPickerOpen reference varaible because the color picker has been PORTALED elsewhere in the DOM.
     // As a result, clicking anywhere in the Color Picker (located in the child TopicMenuOption) will trigger entire topic dropdown to close (because the color picker is technically OUTSIDE this component).
+    // By setting isColorPickerOpen.current to TRUE, the dropdown will NOT close.
     function handleColorPickClicked(isOpen) {
         isColorPickerOpen.current = isOpen;
     }
@@ -88,20 +74,12 @@ function TopicDropDown() {
     }
 
 
-    // Event handler for when User selects a TopicMenuOption component. Need to add this to the selectedTopics state.
-    function handleSelectedTopic(topic) {
-        if (!selectedTopics.some(selectedTopic => selectedTopic._id === topic._id)) {
-            setSelectedTopics(prev => [...prev, topic]);
-        }
-    }
-
     // Handle DELETING Topics permanently 
     function handleTopicDeletion(deletedTopic) {
         // Update the Selected and Filtered topics list after deleting a topic
-        const updatedSelectedTopics = selectedTopics.filter(selectedTopic => selectedTopic._id !== deletedTopic._id);
         const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic._id !== deletedTopic._id);
         // Don't forget to remove any Topics that were selected 
-        setSelectedTopics(updatedSelectedTopics);
+        //onSelectedTopicDeleted(deletedTopic);
         dispatch({type: 'DELETE_TOPIC', payload: deletedTopic});
         // If there's no more filtered topics, we should reset to context topics state
         if (updatedFilteredTopics.length === 0) {
@@ -116,7 +94,7 @@ function TopicDropDown() {
     // Handle CREATING new Topic
     // This will always trigger a filtered topics reset to context topics state
     function handleTopicCreation(newTopic) {
-        setSelectedTopics(prev => [...prev, newTopic]);
+        onTopicSelection(newTopic);
         // IMPORTANT - We want to reset the dropdown menu to showcase everything. 
         //      To do this, set the search value text to an empty string and the exact match boolean to false. 
         setExactSearchMatch(false);
@@ -140,9 +118,9 @@ function TopicDropDown() {
     }
 
     // Handle REMOVING SELECTED topics 
-    function handleRemoveSelectedTopic(event, removeTopic) {
+    function handleRemoveSelectedTopic(event, removedTopic) {
         event.stopPropagation();
-        setSelectedTopics(selectedTopics.filter(selectedTopic => selectedTopic._id !== removeTopic._id));
+        onSelectedTopicRemoved(removedTopic);
     }
 
     function createSelectedTopicTags() {
@@ -168,8 +146,8 @@ function TopicDropDown() {
     function createDropdownMenuOption() {
         return filteredTopics.map(topic => {
             return (
-                <TopicMenuOption key={topic._id} topic={topic} onSelection={handleSelectedTopic} 
-                    isSelected={selectedTopics.includes(topic)} onDeletion={handleTopicDeletion}
+                <TopicMenuOption key={topic._id} topic={topic} onSelection={onTopicSelection} 
+                    isSelected={selectedTopics.find(selectedTopic => selectedTopic._id === topic._id)} onDeletion={handleTopicDeletion}
                     onColorPickClicked={handleColorPickClicked} onColorChange={handleColorChange}/>
             )
         })
