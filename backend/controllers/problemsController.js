@@ -36,7 +36,7 @@ async function addProblem(req, res) {
     }
 
 }
-
+//test
 async function getAllProblems(req, res) {
     const user = req.user;
     try {
