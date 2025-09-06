@@ -140,3 +140,24 @@ input {
   justify-content: space-between;
   align-items: center;
 }
+
+.problemForm {
+  display: flex;
+  flex-direction: column;
+  width: 34%;
+  position: fixed;
+  z-index: 9999;
+  top: 79px;
+  background: white;
+  right: 0;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 100%;
+}
+
+.problemFormBottomButtons {
+  display: flex;
+  gap: 5px;
+  position: relative;
+  top: 50px;
+}
