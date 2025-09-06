@@ -1,19 +1,26 @@
 import { useProblemContext } from "../../hooks/useProblemContext";
+import useTopicContext from "../../hooks/useTopicContext";
 
 function ProblemContent({ problem, rowNum }) {
     const { dispatch } = useProblemContext();
+    const { topics } = useTopicContext();
 
     // Helper function for Difficulty and Understanding Tags. Convert Enums that are in ALL CAPS to readable words
     function convertEnumToString(words) {
         return words.toLowerCase().split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
     
-    function createTopicTag(topic) {
-        return (
-            <span className="tag" key={topic._id} style={{backgroundColor: topic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                {topic.topicName}
-            </span> 
-        );
+    function createTopicTag(topicId) {
+        const topicFound = topics.find((topic => topic._id === topicId));
+        if (topicFound) {
+            return (
+                <span className="tag" key={topicFound._id} style={{backgroundColor: topicFound.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                    {topicFound.topicName}
+                </span> 
+            );
+        } else {
+            console.log(`ERROR: Unable to create Topic Tag for topic with ID: ${topicId}`);
+        }
     }
 
     function createDifficultyTag() {
@@ -69,7 +76,7 @@ function ProblemContent({ problem, rowNum }) {
         }
     }
 
-    const topics = problem.topics.map(topic => (createTopicTag(topic)))
+    const topicsArr = problem.topics.map(topicId => (createTopicTag(topicId)))
     return (
         <>
             <div className="problem-row" style={{backgroundColor: rowNum % 2 == 0 ? 'white' : '#f1f1f1'}}>
@@ -83,7 +90,7 @@ function ProblemContent({ problem, rowNum }) {
                 <div>{createDifficultyTag()}</div>
                 <div>{createUnderstandingTag()}</div>
                 <div className="topicContainer">
-                    {topics}
+                    {topicsArr}
                 </div>
                 <div>{convertToReadableDate()}</div>
                 <div>

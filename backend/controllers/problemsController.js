@@ -28,9 +28,10 @@ async function addProblem(req, res) {
     }
     try { 
         const problem = await Problem.create({ user, date, problemName, url, difficulty, understanding, topics});
+        // TODO: Potentially remove. May not need to populate 'topics' field
         // We need to refetch the problem recently added to populate the TOPIC field with its entire object (not just its ID).
-        const addedProblem = await Problem.findById(problem._id).populate('topics');
-        return res.status(200).json(addedProblem);
+        // const addedProblem = await Problem.findById(problem._id).populate('topics');
+        return res.status(200).json(problem);
     } catch(error) {
         return res.status(500).json({ error: error.message });
     }
@@ -40,7 +41,9 @@ async function addProblem(req, res) {
 async function getAllProblems(req, res) {
     const user = req.user;
     try {
-        const problems = await Problem.find({user}).populate('topics');
+        // TODO: Potentially remove. May not need to populate 'topics' field
+        // const problems = await Problem.find({user}).populate('topics');
+        const problems = await Problem.find({user});
         return res.status(200).json(problems);
     } catch(error) {
         return res.status(500).json({error: error.message});
