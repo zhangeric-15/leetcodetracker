@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import useTopicContext from "../../hooks/useTopicContext";
 import TopicMenuOption from "./TopicMenuOption";
 import TopicCreateOption from "./TopicCreateOption";
+import { useProblemContext } from "../../hooks/useProblemContext";
 
 function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemoved, onSelectedTopicDeleted }) {
     const [isTopicMenuOpen, setTopicMenuOpen] = useState(false);
 
+    const {dispatch: problemDispatch} = useProblemContext();
     // SOURCE OF TRUTH - topics array from the data base
-    const {topics, dispatch} = useTopicContext();
+    const {topics, dispatch: topicDispatch} = useTopicContext();
     // Keeps track of the search value the user inputed 
     const [topicSearchValue, setTopicSearchValue] = useState("");
     const [filteredTopics, setFilteredTopics] = useState([]);
@@ -70,7 +72,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
     }
 
     function handleColorChange(updatedTopic) {
-        dispatch({type: 'SET_TOPIC_COLOR', payload: updatedTopic});
+        topicDispatch({type: 'SET_TOPIC_COLOR', payload: updatedTopic});
     }
 
 
@@ -78,9 +80,14 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
     function handleTopicDeletion(deletedTopic) {
         // Update the Selected and Filtered topics list after deleting a topic
         const updatedFilteredTopics = filteredTopics.filter(filteredTopic => filteredTopic._id !== deletedTopic._id);
+        
+        // IMPORTANT DELETION STATE UPDATES 
+        // Need to go thorugh every Problem's Topic list and remove the topic that was deleted.
+        problemDispatch({type: 'REMOVE_TOPIC_FROM_PROBLEMS', payload: deletedTopic._id})
         // Don't forget to remove any Topics that were selected 
-        //onSelectedTopicDeleted(deletedTopic);
-        dispatch({type: 'DELETE_TOPIC', payload: deletedTopic});
+        topicDispatch({type: 'DELETE_TOPIC', payload: deletedTopic});
+
+
         // If there's no more filtered topics, we should reset to context topics state
         if (updatedFilteredTopics.length === 0) {
             setExactSearchMatch(false);
@@ -99,7 +106,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
         //      To do this, set the search value text to an empty string and the exact match boolean to false. 
         setExactSearchMatch(false);
         setTopicSearchValue("");
-        dispatch({type: 'CREATE_TOPIC', payload: newTopic});
+        topicDispatch({type: 'CREATE_TOPIC', payload: newTopic});
     }
 
     // Handles any mouse click OUTSIDE of the dropdown menu

@@ -21,6 +21,18 @@ function problemReducer(state, action) {
                 // filtering out the problem that was deleted
                 problems: state.problems.filter((problem) => problem._id !== action.payload)
             };
+        // action.payload = id of TOPIC being deleted
+        case 'REMOVE_TOPIC_FROM_PROBLEMS':
+            return {
+                problems: state.problems.map(problem => {
+                            return {...problem, topics: problem.topics.filter(topic => {
+                                if (topic === action.payload) {
+                                    console.log("FOUND BAD TOPIC ID:", action.payload);
+                                }
+                                return topic !== action.payload
+                            })}
+                         })
+            };
         default:
             return state;
     }
