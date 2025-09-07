@@ -1,7 +1,8 @@
 const Problem = require('../models/problemModel');
 const Topic = require('../models/topicModel');
+const mongoose = require('mongoose')
 
-// Checks if the Topic in topics array match and belong to the logged in user. 
+// Find all topics that have their _id included in the topics array and belong to the LOGGED IN USER.
 // This check prevents accessing a Topic that belongs to another user!
 async function areTopicsValid(user, topics) {
     const topicsRetrieved = await Topic.find({
@@ -65,8 +66,42 @@ async function deleteProblem(req, res) {
     }
 }
 
+async function editProblem(req, res) {
+    const user = req.user;
+    const problemId = req.params.problemId;
+
+    try {
+        // Need to make sure ProblemId is in a valid format.
+        if (!mongoose.Types.ObjectId.isValid(problemId)){
+                return res.status(400).json({error: "Problem Update Error - Not a valid ID for problemId"});
+        }
+        // IMPORTANT CHECKS
+        // 1. Check if Problem document belongs to the LOGGED IN user and has the matching problemId.
+        const problem = await Problem.findOne({_id: problemId, user});
+        if (!problem) {
+            return res.status(404).json({error: "Problem not found or Problem is not owned by user."});
+        }
+
+        //TODO: Need to check if Topics provided by user are valid?
+        const {topics: updatedTopics} = req.body;
+        if (updatedTopics) {
+            const topicsValid = await areTopicsValid(user, updatedTopics);
+            if (!topicsValid) {
+                return res.status(400).json({error: "One or more topics do NOT belong to the logged in User"});
+            }
+        }
+
+        const updatedProblem = await Problem.findByIdAndUpdate(problemId, req.body, {new: true, runValidators: true});
+        return res.status(200).json(updatedProblem);
+    } catch (error) {
+        return res.status(500).json({error: error.message});
+    }
+
+}
+
 module.exports = {
     getAllProblems,
     addProblem,
-    deleteProblem
+    deleteProblem,
+    editProblem
 };

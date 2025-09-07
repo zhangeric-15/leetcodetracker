@@ -59,7 +59,7 @@ async function updateTopicColor(req, res) {
         // 1. Check if Topic document belongs to the LOGGED IN user and has the matching topicId
         const topic = await Topic.findOne({_id: topicId, user: userId});
         if (!topic) {
-            return res.status(404).json({error: "Topic not found"});
+            return res.status(404).json({error: "Topic not found or Topic is not owned by user."});
         }
         const updatedTopic = await Topic.findByIdAndUpdate(topicId, req.body, {new: true, runValidators: true});
         return res.status(200).json(updatedTopic);
