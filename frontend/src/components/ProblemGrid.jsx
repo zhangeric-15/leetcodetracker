@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useProblemContext } from '../../hooks/useProblemContext';
 import ProblemContent from './ProblemContent';
 
-function ProblemGrid() {
+function ProblemGrid({onEditProblem}) {
     const {problems, dispatch} = useProblemContext();
     useEffect(() => {
         const fetchProblems = async () => {
@@ -30,7 +30,7 @@ function ProblemGrid() {
     if (problems) {
         problemContentArr = problems.map(problem => {
             rowNum += 1;
-            return <ProblemContent key={problem._id} problem={problem} rowNum={rowNum}/>    
+            return <ProblemContent key={problem._id} problem={problem} rowNum={rowNum} onEditProblem={onEditProblem}/>    
         });
     }
     return (

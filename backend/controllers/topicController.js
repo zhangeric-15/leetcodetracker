@@ -61,9 +61,6 @@ async function updateTopicColor(req, res) {
         if (!topic) {
             return res.status(404).json({error: "Topic not found"});
         }
-        if (userId.toString() !== topic.user.toString()) {
-            return res.status(403).json({error: "You do not have permission to update this topic"});
-        } 
         const updatedTopic = await Topic.findByIdAndUpdate(topicId, req.body, {new: true, runValidators: true});
         return res.status(200).json(updatedTopic);
     } catch (error) {

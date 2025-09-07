@@ -1,7 +1,7 @@
 import { useProblemContext } from "../../hooks/useProblemContext";
 import useTopicContext from "../../hooks/useTopicContext";
 
-function ProblemContent({ problem, rowNum }) {
+function ProblemContent({ problem, rowNum, onEditProblem }) {
     const { dispatch } = useProblemContext();
     const { topics } = useTopicContext();
 
@@ -94,7 +94,7 @@ function ProblemContent({ problem, rowNum }) {
                 </div>
                 <div>{convertToReadableDate()}</div>
                 <div style={{display: "flex", alignItems: "center", gap: "9px"}}>
-                    <i className="fa-solid fa-pen-to-square clickable-icon"></i>
+                    <i onClick={(event) => onEditProblem(event, problem)} className="fa-solid fa-pen-to-square clickable-icon"></i>
                     <i onClick={handleDeleteProblem} className="fa-solid fa-trash clickable-icon"></i>
                 </div>
             </div>

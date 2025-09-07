@@ -8,22 +8,30 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useProblemContext } from "../../hooks/useProblemContext";
 
-function ProblemForm({ problem = null, onSubmit, onCancel }) {
+function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
+    const {topics} = useTopicContext();
+    const {problems, dispatch: problemDispatch} = useProblemContext();
     const [problemName, setProblemName] = useState(() => {
         if (problem !== null) {
-            return problem.name;
+            return problem.problemName;
         } else {
-            return null;
+            return "";
         }
     })
     const [url, setUrl] = useState(() => {
         if (problem !== null) {
             return problem.url;
         } else {
-            return null;
+            return "";
         }
     })
-    const [selectedTopics, setSelectedTopics] = useState([]);
+    const [selectedTopics, setSelectedTopics] = useState(() => {
+        if (problem !== null) {
+            return problem.topics;
+        } else {
+            return [];
+        }
+    });
     const [selectedDifficulty, setSelectedDifficulty] = useState(() => {
         if (problem !== null) {
             return problem.difficulty;
@@ -38,9 +46,13 @@ function ProblemForm({ problem = null, onSubmit, onCancel }) {
             return null;
         }
     })
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const {topics} = useTopicContext();
-    const {problems, dispatch: problemDispatch} = useProblemContext();
+    const [selectedDate, setSelectedDate] = useState(() => {
+        if (problem !== null) {
+            return problem.date;
+        } else {
+            return new Date();
+        }
+    });
 
     useEffect(() => {
         if (topics !== null) {
@@ -138,13 +150,14 @@ function ProblemForm({ problem = null, onSubmit, onCancel }) {
     return (
         <div className="problemForm">
             <form onSubmit={handleSubmit}>
-                <h2> Add Problem </h2>
+                <h2> {editMode ? "Edit Problem" : "Add Problem"} </h2>
                 <div>
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <label>Problem Name:</label>
                         <input
                         type="text"
                         placeholder="Problem Name"
+                        value={problemName}
                         onChange={(e) => setProblemName(e.target.value)}
                         required/>
                     </div>
@@ -154,6 +167,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel }) {
                         <input
                         type="text"
                         placeholder="URL"
+                        value={url}
                         onChange={(e) => setUrl(e.target.value)}
                         required/>
                     </div>
@@ -181,7 +195,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel }) {
                         /> */}
                     </div>
                     <div className="problemFormBottomButtons">
-                        <button type="submit">Add</button>
+                        <button type="submit">{editMode? "Confirm": "Add"}</button>
                         <button type="button" onClick={() => onCancel()}>Cancel</button>
                     </div>
                 </div>

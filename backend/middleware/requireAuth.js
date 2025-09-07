@@ -48,7 +48,7 @@ function authJwtCookie(req, res, next) {
         // We will get the decoded payload here, which will be the userId
         const { userId } = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
         if (!userId) {
-            throw Error("JWT verified, but unable to grab userId");
+            throw Error("Unable to verify JWT");
         }
         req.user = userId;
     } catch(error) {
