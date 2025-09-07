@@ -25,9 +25,10 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             return "";
         }
     })
+    // IMPORTANT NOTE: selectedTopics should contain the FULL TOPIC object, not just the TopicId.
     const [selectedTopics, setSelectedTopics] = useState(() => {
         if (problem !== null) {
-            return problem.topics;
+            return initializeSelectedTopics(problem.topics);
         } else {
             return [];
         }
@@ -60,6 +61,20 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             setSelectedTopics(updatedSelectedTopics);
         }
     }, [topics])
+
+
+    // Initialize selectedTopics state given a list of topicIds
+    function initializeSelectedTopics(topicIds) {
+        const topicsArr = []
+        topicIds.forEach(topicId => {
+            const foundTopic = topics.find(topic => topic._id === topicId);
+            if (foundTopic) {
+                topicsArr.push(foundTopic);
+            }
+        })
+        return topicsArr;
+    }
+
 
     function isProblemValid() {
         if (problemName && url && selectedTopics && selectedDate) {
