@@ -14,7 +14,7 @@ function Home() {
 
     return (
         <div>
-            <div>
+            <div className="toolBar">
                 <button onClick={() => setProblemFormOpen(true)}>Add Problem</button>
             </div>
             {problemFormOpen && <ProblemForm onSubmit={handleProblemFormSubmit} onCancel={handleProblemFormCancel}/>}

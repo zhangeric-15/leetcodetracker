@@ -93,8 +93,9 @@ function ProblemContent({ problem, rowNum }) {
                     {topicsArr}
                 </div>
                 <div>{convertToReadableDate()}</div>
-                <div>
-                    <button onClick={handleDeleteProblem}>DELETE</button>
+                <div style={{display: "flex", alignItems: "center", gap: "9px"}}>
+                    <i className="fa-solid fa-pen-to-square clickable-icon"></i>
+                    <i onClick={handleDeleteProblem} className="fa-solid fa-trash clickable-icon"></i>
                 </div>
             </div>
         </>

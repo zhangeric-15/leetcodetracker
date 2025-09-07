@@ -35,6 +35,7 @@ header h1 {
 .userNavButtons {
   display: flex;
   gap: 12px;
+  align-items: center;
 }
 
 
@@ -160,4 +161,14 @@ input {
   gap: 5px;
   position: relative;
   top: 50px;
+}
+
+.toolBar {
+  position: relative;
+  top: 34px;
+}
+
+.clickable-icon {
+  cursor: pointer;
+  font-size: large;
 }
