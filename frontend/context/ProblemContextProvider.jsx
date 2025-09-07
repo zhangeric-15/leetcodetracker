@@ -10,6 +10,11 @@ function problemReducer(state, action) {
             return {
                 problems: [...state.problems, action.payload]
             };
+        // action.payload = updated problem object
+        case 'UPDATE_PROBLEM':
+            return {
+                problems: state.problems.map(problem => problem._id === action.payload._id ? action.payload : problem)
+            };
         // action.payload = an array of problems
         case 'SET_PROBLEMS':
             return {

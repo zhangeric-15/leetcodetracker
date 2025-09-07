@@ -104,6 +104,28 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
         }
     }
 
+    async function updateProblem(updatedProblem) {
+        try {
+            const response = await fetch(`http://localhost:5001/api/problems/${problem._id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify(updatedProblem)
+            });
+            const problemData = await response.json();
+            if (!response.ok) {
+                throw new Error(`Unable to update problem due to response status: ${response.status} with message: ${problemData.error}`);
+            }
+            problemDispatch({type: 'UPDATE_PROBLEM', payload: problemData});
+
+
+        } catch(error) {
+            console.log("Unable to add problem due to error: ", error);
+        }
+    }
+
     function handleSubmit(event) {
         // Prevent reloading the page when form is submitted.
         event.preventDefault();
@@ -116,7 +138,11 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             date: selectedDate
         };
         if (isProblemValid()) {
-            addProblem(updatedProblem);
+            if (editMode) {
+                updateProblem(updatedProblem);
+            } else {
+                addProblem(updatedProblem);
+            }
         } else {
             console.log("Problem is NOT valid");
         }
