@@ -11,15 +11,18 @@ function ProblemContent({ problem, rowNum, onEditProblem }) {
     }
     
     function createTopicTag(topicId) {
-        const topicFound = topics.find((topic => topic._id === topicId));
-        if (topicFound) {
-            return (
-                <span className="tag" key={topicFound._id} style={{backgroundColor: topicFound.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
-                    {topicFound.topicName}
-                </span> 
-            );
-        } else {
-            console.log(`ERROR: Unable to create Topic Tag for topic with ID: ${topicId}`);
+        // Important Edge case - Topics can be null during the FIRST render b/c this will run BEFORE TopicContextProvider's useEffect.
+        if (topics !== null) {
+            const topicFound = topics.find((topic => topic._id === topicId));
+            if (topicFound) {
+                return (
+                    <span className="tag" key={topicFound._id} style={{backgroundColor: topicFound.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
+                        {topicFound.topicName}
+                    </span> 
+                );
+            } else {
+                console.log(`ERROR: Unable to create Topic Tag for topic with ID: ${topicId}`);
+            }
         }
     }
 
