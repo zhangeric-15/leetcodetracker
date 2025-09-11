@@ -2,6 +2,8 @@
 body {
   background: #f1f1f1;
   font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 header {
@@ -36,6 +38,7 @@ header h1 {
   display: flex;
   gap: 12px;
   align-items: center;
+  padding-right: 7px;
 }
 
 
@@ -171,4 +174,18 @@ input {
 .clickable-icon {
   cursor: pointer;
   font-size: large;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: black
+}
+
+.logoutButton{
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  color: rgb(0, 123, 255);
 }

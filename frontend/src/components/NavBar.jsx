@@ -22,7 +22,7 @@ function NavBar() {
         <header>
             <div className="NavBarContainer">
                 <Link to="/">
-                    <h1>Leetcode Tracker</h1>
+                    <h1 style={{paddingLeft: "5px"}}>Leetcode Tracker</h1>
                 </Link>
                 {!user && (
                     <div className="loginLogoutButtons">
@@ -33,7 +33,8 @@ function NavBar() {
                 {user && (
                     <div className="userNavButtons">
                         <h5>{user.email}</h5>
-                        <button onClick={logout}>Logout</button>
+                        <div className='divider'></div>
+                        <h5 className="logoutButton"onClick={logout}>Logout</h5>
                     </div>
                 )}
             </div>
