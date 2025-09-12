@@ -142,7 +142,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
         return selectedTopics.map(selectedTopic => (
             <span key={selectedTopic._id} className="tag" style={{backgroundColor: selectedTopic.color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {selectedTopic.topicName}
-                <button onClick={(event) => handleRemoveSelectedTopic(event, selectedTopic)}>
+                <button style={{marginLeft: '6px', borderRadius: '9px'}} onClick={(event) => handleRemoveSelectedTopic(event, selectedTopic)}>
                     <i className="fa-solid fa-x"></i>
                 </button>
             </span>
@@ -185,7 +185,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
                         </div>
                         <input
                         type="text"
-                        placeholder="Topic Name"
+                        placeholder="Search For Topic Name"
                         value={topicSearchValue}
                         onChange={handleTopicSearch}
                         required/>

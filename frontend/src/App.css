@@ -118,6 +118,7 @@ input {
   cursor: pointer;
   display: flex;
   flex-wrap: wrap;
+  gap: 5px;
 }
 
 .dropdown-menu {
@@ -132,9 +133,8 @@ input {
   max-height: 190px;
   overflow-y: auto;
   z-index: 9999;
-  gap: 15px;
   background: white;
-  border: black;
+  border: 1px solid black;
   width: 100%;
 }
 
@@ -143,6 +143,12 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dropdown-menu-option:hover {
+  background-color: rgb(32, 39, 170);
 }
 
 .problemForm {

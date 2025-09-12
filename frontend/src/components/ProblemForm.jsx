@@ -192,7 +192,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
         <div className="problemForm">
             <form onSubmit={handleSubmit}>
                 <h2> {editMode ? "Edit Problem" : "Add Problem"} </h2>
-                <div>
+                <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <label>Problem Name:</label>
                         <input
