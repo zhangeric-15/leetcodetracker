@@ -75,22 +75,22 @@ function UnderstandingDropdown({ understanding = null, onUnderstandingChanged}) 
                         </div>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "UNDERSTAND")} style={{backgroundColor: understanding === "UNDERSTAND" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "UNDERSTAND")} style={{backgroundColor: understanding === "UNDERSTAND" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: understandingColor["UNDERSTAND"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Understand
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "MEDIUM")} style={{backgroundColor: understanding === "MEDIUM" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "MEDIUM")} style={{backgroundColor: understanding === "MEDIUM" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: understandingColor["MEDIUM"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Medium
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "NEEDS_REVIEW")} style={{backgroundColor: understanding === "NEEDS_REVIEW" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "NEEDS_REVIEW")} style={{backgroundColor: understanding === "NEEDS_REVIEW" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: understandingColor["NEEDS_REVIEW"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Needs Review
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "TO_DO")} style={{backgroundColor: understanding === "TO_DO" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedUnderstanding(event, "TO_DO")} style={{backgroundColor: understanding === "TO_DO" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: understandingColor["TO_DO"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 To do
                             </span>

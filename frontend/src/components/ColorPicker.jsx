@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 function ColorPicker({onChange, onConfirm, onCancel, colorPickerStyle, currentColor}) {
     return createPortal(
         <div style={colorPickerStyle} onClick={(event) => event.stopPropagation()}>
-            <ChromePicker color={currentColor} onChange={(selectedColor, event) => onChange(selectedColor, event)}/>
+            <ChromePicker disableAlpha={true} color={currentColor} onChange={(selectedColor, event) => onChange(selectedColor, event)}/>
             <div style={{backgroundColor: 'WHITE'}}>
                 <button onClick={() => onConfirm()}>OK</button>
                 <button onClick={() => onCancel()}>Cancel</button>

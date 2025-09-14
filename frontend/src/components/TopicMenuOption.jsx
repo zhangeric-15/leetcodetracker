@@ -88,7 +88,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
     }
 
     return (
-        <div className="dropdown-menu-option" onClick={handleSelectedTopic} style={{backgroundColor: isSelected ? 'gray' : 'white'}}>
+        <div className="dropdown-menu-option" onClick={handleSelectedTopic} style={{backgroundColor: isSelected && 'gray'}}>
             <span className="tag" style={{backgroundColor: showColorPicker ? tempColor : color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span>

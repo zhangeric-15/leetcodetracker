@@ -75,22 +75,22 @@ function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
                         </div>
                     </div>
                     <div className="dropdown-menu-options-container">
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "EASY")} style={{backgroundColor: difficulty === "EASY" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "EASY")} style={{backgroundColor: difficulty === "EASY" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["EASY"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Easy
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "MEDIUM")} style={{backgroundColor: difficulty === "MEDIUM" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "MEDIUM")} style={{backgroundColor: difficulty === "MEDIUM" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["MEDIUM"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Medium
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "HARD")} style={{backgroundColor: difficulty === "HARD" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "HARD")} style={{backgroundColor: difficulty === "HARD" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["HARD"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Hard
                             </span>
                         </div>
-                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "UNKNOWN")} style={{backgroundColor: difficulty === "UNKNOWN" ? 'gray' : 'white'}}>
+                        <div className="dropdown-menu-option" onClick={(event) => handleSelectedDifficulty(event, "UNKNOWN")} style={{backgroundColor: difficulty === "UNKNOWN" && 'gray'}}>
                             <span className="tag" style={{backgroundColor: difficultyColor["UNKNOWN"], borderRadius: '8px', padding: '6px', display: 'inline'}}>
                                 Unknown
                             </span>

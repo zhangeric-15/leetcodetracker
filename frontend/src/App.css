@@ -148,7 +148,7 @@ input {
 }
 
 .dropdown-menu-option:hover {
-  background-color: rgb(32, 39, 170);
+  background-color: #eee;
 }
 
 .problemForm {
