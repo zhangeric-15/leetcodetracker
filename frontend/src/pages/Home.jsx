@@ -26,12 +26,12 @@ function Home() {
     }
 
     return (
-        <div>
-            <div className="toolBar">
-                <button onClick={handleAddProblemClicked}>Add Problem</button>
-            </div>
+        <div style={{display: 'flex', flexDirection:'column', gap: '15px', paddingLeft: '9px'}}>
             {problemFormOpen && <ProblemForm problem={focusedProblem} onSubmit={handleProblemFormSubmit} onCancel={handleProblemFormCancel} editMode={focusedProblem ? true : false}/>}
             <ProblemGrid onEditProblem={handleEditProblemClicked}/>
+            <div className="toolBar">
+                <button className="round-btn" onClick={handleAddProblemClicked}>Add Problem</button>
+            </div>
         </div>
     )
 }

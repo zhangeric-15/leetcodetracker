@@ -282,7 +282,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
                         </div>
                     )}
                     <div className="problemFormBottomButtons">
-                        <button type="submit">{editMode? "Confirm": "Add"}</button>
+                        <button className="add-edit-btn" type="submit">{editMode? "Confirm": "Add"}</button>
                         <button type="button" onClick={() => onCancel()}>Cancel</button>
                     </div>
                 </div>

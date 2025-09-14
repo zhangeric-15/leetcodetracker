@@ -19,16 +19,11 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 5px;
+  padding-left: 9px;
   padding-right: 5px;
   padding-top: 5px;
 }
 
-header h1 {
-  color:  black;
-  font-weight: 800;
-  font-size: 30px;
-}
 
 .loginLogoutButtons {
   padding-top: 0px;
@@ -168,7 +163,7 @@ input {
   width: 34%;
   position: fixed;
   z-index: 9999;
-  top: 79px;
+  top: 0;
   background: white;
   right: 0;
   padding-left: 12px;
@@ -205,4 +200,42 @@ input {
 
 .logoutButton:hover {
   color: rgb(0, 123, 255);
+}
+
+.leetcode-tracker-link {
+  text-decoration: none;
+  color: black;
+}
+
+.leetcode-tracker-link:hover {
+  color: rgb(0, 123, 255);
+}
+
+.round-btn {
+    width: 111px;
+    height: 35px;
+    border-radius: 7%;
+    border: 2px solid rgb(11, 140, 195);
+    background: transparent;
+    color: #087ed7;
+    cursor: pointer;
+    font-size: 14px;
+}
+.round-btn:hover {
+  background: rgba(0, 255, 255, 0.1); 
+}
+
+.add-edit-btn {
+  width: 70px;
+  height: 35px;
+  border-radius: 7%;
+  border: 2px solid rgb(11, 212, 88);
+  background: transparent;
+  color: #08d716;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.add-edit-btn:hover {
+  background: rgba(3, 241, 47, 0.365);
 }

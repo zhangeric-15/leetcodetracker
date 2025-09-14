@@ -21,7 +21,7 @@ function NavBar() {
     return (
         <header>
             <div className="NavBarContainer">
-                <Link to="/">
+                <Link className='leetcode-tracker-link' to="/">
                     <h1 style={{paddingLeft: "5px"}}>Leetcode Tracker</h1>
                 </Link>
                 {!user && (
