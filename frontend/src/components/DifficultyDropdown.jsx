@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
+function DifficultyDropdown({ difficulty, onDifficultyChanged}) {
     const [isDifficultyMenuOpen, setDifficultyMenuOpen] = useState(false);
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -32,7 +32,7 @@ function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
 
     function handleRemoveSelectedDifficulty(event) {
         event.stopPropagation();
-        onDifficultyChanged(null);
+        onDifficultyChanged("");
     }
 
     function handleOpeningDropdown() {
@@ -71,7 +71,7 @@ function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
                         <div className="selected-dropdown-value" onClick={handleOpeningDropdown}>
-                            {difficulty !== null ? createRemovableSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
+                            {difficulty !== "" ? createRemovableSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
                         </div>
                     </div>
                     <div className="dropdown-menu-options-container">
@@ -99,7 +99,7 @@ function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
                 </div> 
             ) : 
             <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
-                {difficulty !== null ? createSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
+                {difficulty !== "" ? createSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
             </div>
             }
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-function UnderstandingDropdown({ understanding = null, onUnderstandingChanged}) {
+function UnderstandingDropdown({ understanding, onUnderstandingChanged}) {
     const [isUnderstandingMenuOpen, setUnderstandingMenuOpen] = useState(false);
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -32,7 +32,7 @@ function UnderstandingDropdown({ understanding = null, onUnderstandingChanged}) 
 
     function handleRemoveSelectedUnderstanding(event) {
         event.stopPropagation();
-        onUnderstandingChanged(null);
+        onUnderstandingChanged("");
     }
 
     function handleOpeningDropdown() {
@@ -71,7 +71,7 @@ function UnderstandingDropdown({ understanding = null, onUnderstandingChanged}) 
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
                         <div className="selected-dropdown-value" onClick={handleOpeningDropdown}>
-                            {understanding !== null ? createRemovableSelectedUnderstanding() : (<div style={{padding: '20px'}}></div>)}
+                            {understanding !== "" ? createRemovableSelectedUnderstanding() : (<div style={{padding: '20px'}}></div>)}
                         </div>
                     </div>
                     <div className="dropdown-menu-options-container">
@@ -99,7 +99,7 @@ function UnderstandingDropdown({ understanding = null, onUnderstandingChanged}) 
                 </div> 
             ) : 
             <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
-                {understanding !== null ? createSelectedUnderstanding() : (<div style={{padding: '20px'}}></div>)}
+                {understanding !== "" ? createSelectedUnderstanding() : (<div style={{padding: '20px'}}></div>)}
             </div>
             }
         </div>

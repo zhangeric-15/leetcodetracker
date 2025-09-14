@@ -11,6 +11,7 @@ import { useProblemContext } from "../../hooks/useProblemContext";
 function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
     const {topics} = useTopicContext();
     const {problems, dispatch: problemDispatch} = useProblemContext();
+    const [errors, setErrors] = useState({});
     const [problemName, setProblemName] = useState(() => {
         if (problem !== null) {
             return problem.problemName;
@@ -37,14 +38,14 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
         if (problem !== null) {
             return problem.difficulty;
         } else {
-            return null;
+            return "";
         }
     })
     const [selectedUnderstanding, setSelectedUnderstanding] = useState(() => {
         if (problem !== null) {
             return problem.understanding;
         } else {
-            return null;
+            return "";
         }
     })
     const [selectedDate, setSelectedDate] = useState(() => {
@@ -62,6 +63,19 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
         }
     }, [topics])
 
+    // EDGE CASE: For if the 'Edit Problem' page is open and the user clicks 'Add Problem', need to clear out all existing fields in the Problem Form.
+    useEffect(() => {
+        if (problem == null) {
+            setProblemName("");
+            setUrl("");
+            setSelectedTopics([]);
+            setSelectedDifficulty("");
+            setSelectedUnderstanding("");
+            setSelectedDate(new Date());
+            setErrors({});
+        }
+    }, [problem])
+
 
     // Initialize selectedTopics state given a list of topicIds
     function initializeSelectedTopics(topicIds) {
@@ -76,10 +90,30 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
     }
 
 
+    // Validation check for Problem Form. Will keep track of which fields are empty and need user input.
     function isProblemValid() {
-        if (problemName && url && selectedTopics && selectedDate) {
-            return true;
+        let errors = {}
+        if (problemName === "") {
+            errors.problemName = true;
         }
+        if (url === "") {
+            errors.url = true;
+        }
+        if (selectedDifficulty === "") {
+            errors.selectedDifficulty = true;
+        }
+        if (selectedUnderstanding === "") {
+            errors.selectedUnderstanding = true;
+        }
+        if (selectedDate === null || selectedDate === "") {
+            errors.selectedDate = true;
+        }
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
+            return false;
+        }
+        return true;
+
     }
 
     async function addProblem(newProblem) {
@@ -143,10 +177,10 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             } else {
                 addProblem(updatedProblem);
             }
+            onSubmit();
         } else {
             console.log("Problem is NOT valid");
         }
-        onSubmit();
         
     }
 
@@ -188,6 +222,8 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
         setSelectedUnderstanding(understanding);
     }
 
+    const inputErrorStyle = {border: 'solid', borderColor: 'RED', borderRadius: '2px'};
+
     return (
         <div className="problemForm">
             <form onSubmit={handleSubmit}>
@@ -200,7 +236,8 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
                         placeholder="Problem Name"
                         value={problemName}
                         onChange={(e) => setProblemName(e.target.value)}
-                        required/>
+                        style={errors.problemName && inputErrorStyle}
+                        />
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -210,17 +247,22 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
                         placeholder="URL"
                         value={url}
                         onChange={(e) => setUrl(e.target.value)}
-                        required/>
+                        style={errors.url && inputErrorStyle}
+                        />
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <label>Difficulty:</label>
-                        <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+                        <div style={errors.selectedDifficulty && {border: 'solid', borderColor: 'RED', borderRadius: '2px'}}>
+                            <DifficultyDropdown difficulty={selectedDifficulty} onDifficultyChanged={handleDifficultyChanged}/>
+                        </div>
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <label>Understanding: </label>
-                        <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
+                        <div style={errors.selectedUnderstanding && {border: 'solid', borderColor: 'RED', borderRadius: '2px'}}>
+                            <UnderstandingDropdown understanding={selectedUnderstanding} onUnderstandingChanged={handleUnderstandingChanged} />
+                        </div>
                     </div>
 
                     <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -231,10 +273,14 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
                     <div style={{display: 'flex', flexDirection: 'column'}}>
                         <label>Date solved: </label>
                         <DatePicker selected={selectedDate} onChange = {(date) => setSelectedDate(date)}/>
-                        {/* <input
-                        type="date"
-                        /> */}
                     </div>
+                    {Object.keys(errors).length > 0 && (
+                        <div>
+                            <span style={{color: 'RED'}}>
+                                Errors: Please fill out the required fields above
+                            </span>
+                        </div>
+                    )}
                     <div className="problemFormBottomButtons">
                         <button type="submit">{editMode? "Confirm": "Add"}</button>
                         <button type="button" onClick={() => onCancel()}>Cancel</button>

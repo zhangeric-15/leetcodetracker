@@ -24,7 +24,7 @@ const problemSchema = new mongoose.Schema({
     understanding: {
         type: String,
         enum: ['UNDERSTAND', 'MEDIUM', 'NEEDS_REVIEW', 'TO_DO'],
-        required: true
+        default: 'TO_DO'
     },
     // Referencing the Topic's _id here. topics will contain a list of Topic objects defined in topicModel.js.
     topics: [{type: mongoose.Schema.Types.ObjectId, ref: 'Topic'}]   
