@@ -70,7 +70,7 @@ function DifficultyDropdown({ difficulty = null, onDifficultyChanged}) {
             {isDifficultyMenuOpen ? (
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
-                        <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
+                        <div className="selected-dropdown-value" onClick={handleOpeningDropdown}>
                             {difficulty !== null ? createRemovableSelectedDifficulty() : (<div style={{padding: '20px'}}></div>)}
                         </div>
                     </div>

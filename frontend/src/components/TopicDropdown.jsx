@@ -180,7 +180,7 @@ function TopicDropDown({ selectedTopics, onTopicSelection, onSelectedTopicRemove
             {isTopicMenuOpen ? (
                 <div ref={dropDownMenuRef} className="dropdown-menu">
                     <div className="dropdown-value">
-                        <div className="default-dropdown-value" onClick={handleOpeningDropdown}>
+                        <div className="selected-dropdown-value" onClick={handleOpeningDropdown}>
                             {selectedTopics.length !== 0 ? createRemovableSelectedTopicTags() : (<div style={{padding: '20px'}}></div>)}
                         </div>
                         <input

@@ -121,6 +121,17 @@ input {
   gap: 5px;
 }
 
+.default-dropdown-value:hover {
+  background-color: #eee;
+}
+
+
+.selected-dropdown-value {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 .dropdown-menu {
   max-height: 200px;
 }

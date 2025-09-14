@@ -26,14 +26,6 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
     const colorChangeButtonRef = useRef();
     const [colorPickerStyle, setColorPickerStyle] = useState();
 
-    useEffect(() => {
-            if (colorChangeButtonRef.current) {
-                // This essentially gets the position of the Change Color button
-            const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
-            setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left, top: changeColorButtonPos.top, zIndex: 9999,});
-            }
-    }, [])
-
     async function handleClick(event) {
         event.stopPropagation();
         // Handle sending POST request to Add Topic 
@@ -79,6 +71,9 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
         event.stopPropagation();
         setShowColorPicker(true);
         onColorPickClicked(true);
+        // This essentially gets the position of the Change Color button. We want to open the color picker right above the 'Change Color' button.
+        const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
+        setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left - 120, top: changeColorButtonPos.top - 275, zIndex: 9999,});
     }
 
 
@@ -88,7 +83,7 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
     }
 
     return (
-        <div className="dropdown-menu-option" onClick={handleClick} style={{backgroundColor: 'white'}}>
+        <div className="dropdown-menu-option" onClick={handleClick}>
             <div>
                 <span>
                     CREATE
