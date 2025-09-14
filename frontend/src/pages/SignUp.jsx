@@ -46,8 +46,8 @@ function Signup() {
             onChange={(e) => setPassword(e.target.value)}
             required/>
 
-            {error && <div>{error}</div>}
-            <button>Sign up</button>
+            {error && <div style={{color: 'RED', paddingBottom: '15px'}}>{error}</div>}
+            <button id='signup-form-button'>Sign up</button>
 
         </form>
         

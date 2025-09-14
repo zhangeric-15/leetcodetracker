@@ -26,8 +26,8 @@ function NavBar() {
                 </Link>
                 {!user && (
                     <div className="loginLogoutButtons">
-                        <button onClick={loginClick}>Login</button>
-                        <button onClick={signUpClick}>Sign Up</button>
+                        <button id='login-top-button' onClick={loginClick}>Login</button>
+                        <button id='signup-top-button' onClick={signUpClick}>Sign Up</button>
                     </div>
                 )}
                 {user && (

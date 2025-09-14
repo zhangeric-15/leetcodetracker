@@ -48,8 +48,10 @@ function Login() {
              onChange={(e) => setPassword(e.target.value)}
              required/>
 
-            {error && <div>{error}</div>}
-             <button>Log in</button>
+            {error && <div style={{color: 'RED', paddingBottom: '15px'}}>{error}</div>}
+            <div>
+                <button id='login-form-button'>Log in</button>
+            </div>
         </form>
     )
 }

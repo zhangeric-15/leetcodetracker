@@ -226,6 +226,9 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
 
     return (
         <div className="problemForm">
+            <div className="collapse-right-icon" onClick={() => onCancel()}>
+                <i className="fa-solid fa-angles-right"></i>
+            </div>
             <form onSubmit={handleSubmit}>
                 <h2> {editMode ? "Edit Problem" : "Add Problem"} </h2>
                 <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
@@ -283,7 +286,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
                     )}
                     <div className="problemFormBottomButtons">
                         <button className="add-edit-btn" type="submit">{editMode? "Confirm": "Add"}</button>
-                        <button type="button" onClick={() => onCancel()}>Cancel</button>
+                        <button className="cancel-btn" type="button" onClick={() => onCancel()}>Cancel</button>
                     </div>
                 </div>
             </form>
