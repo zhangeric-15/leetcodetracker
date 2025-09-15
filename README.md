@@ -22,12 +22,19 @@
 ---
 
 ## Screenshots/Videos
-- Coming Soon!
+
+### Login
+https://github.com/user-attachments/assets/2b5f8707-17dc-4034-b055-9d206ad4b4d9
+
+### Sign up
+
+
 
 ---
 
 ## Upcoming Features
-- Sort and filter problems by name, difficulty, or date solved
+- Sort and filter problems by name, difficulty, or date solved.
+- Search for problems.
 
 ## Getting Started
 
