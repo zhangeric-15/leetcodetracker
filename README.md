@@ -13,7 +13,7 @@
 ---
 
 ## Features
-- User Login and Sign-up logic.
+- User login and sign-up logic.
   -   User authentication with persistent sessions through JSON Web Tokens (JWT) stored in cookies.
 - Log, edit, and delete solved problems.
 - Categorize problems by difficulty, understanding, date solved, and custom topics.
@@ -25,7 +25,7 @@
 ## Screenshots/Videos
 
 ### Video Demo
-YouTube Link - 
+YouTube Link - https://youtu.be/eiHjDDW-vS8
 
 ### Login
 https://github.com/user-attachments/assets/2b5f8707-17dc-4034-b055-9d206ad4b4d9
