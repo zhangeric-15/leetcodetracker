@@ -73,7 +73,7 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
         onColorPickClicked(true);
         // This essentially gets the position of the Change Color button. We want to open the color picker right above the 'Change Color' button.
         const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
-        setColorPickerStyle({position: 'absolute', left: changeColorButtonPos.left - 120, top: changeColorButtonPos.top - 275, zIndex: 9999,});
+        setColorPickerStyle({position: 'fixed', left: changeColorButtonPos.left - 120, top: changeColorButtonPos.top - 275, zIndex: 9999,});
     }
 
 

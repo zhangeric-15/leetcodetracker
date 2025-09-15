@@ -226,6 +226,7 @@ input {
 .toolBar {
   position: relative;
   top: 34px;
+  padding-bottom: 25px;
 }
 
 .clickable-icon {
