@@ -35,7 +35,7 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
         onColorPickClicked(true);
         // This essentially gets the position of the Change Color button. We want to open the color picker right above the 'Change Color' button.
         const changeColorButtonPos = colorChangeButtonRef.current.getBoundingClientRect();
-        setColorPickerStyle({position: 'fixed', left: changeColorButtonPos.left - 100, top: changeColorButtonPos.top - 270, zIndex: 9999,});
+        setColorPickerStyle({position: 'fixed', left: changeColorButtonPos.left - 170, top: changeColorButtonPos.top - 270, zIndex: 9999,});
         
     }
 
@@ -88,11 +88,15 @@ function TopicMenuOption({ topic, onSelection, isSelected, onDeletion, onColorPi
             <span className="tag" style={{backgroundColor: showColorPicker ? tempColor : color, borderRadius: '8px', padding: '6px', display: 'inline'}}>
                 {topic.topicName}
             </span>
-            <div style={{display: 'flex'}}>
-                <button type="button" ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
+            <div style={{display: 'flex', gap: '9px'}}>
+                <div ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>
+                    <i className="fa-solid fa-paintbrush"></i>
+                </div>
+                {/* <button type="button" ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button> */}
                 {showColorPicker && <ColorPicker onChange={handleTempColorChange} onConfirm={handleColorConfirm} onCancel={handleColorCancel} colorPickerStyle={colorPickerStyle} currentColor={tempColor}/>}
-                 {/* type="button" prevents the "Please fill out this field" warning */}
-                <button type="button" onClick={handleDeleteTopic} style={{height: '20px', marginTop: '10px'}}>Delete</button>
+                <div onClick={handleDeleteTopic}>
+                    <i className="fa-solid fa-trash clickable-icon"></i>
+                </div>
             </div>
         </div>
     );

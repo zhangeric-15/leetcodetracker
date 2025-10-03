@@ -17,6 +17,7 @@ userSchema.statics.login = async function(email, password) {
         throw Error("Login - Email or Password is missing!");
     }
     // IMPORTANT: We grab the user's email and HASHED PASSWORD. Will compare typed password to the HASHED PASSWORD by using bcrypt.compare
+    // Even though this is a static method, we can still use 'this' because 'this' refers to the MODEL itself, not an INSTANCE of the model.
     const existingUser = await this.findOne({email});
     if (!existingUser) {
         throw Error(`User with email: ${email} does NOT exist`);

@@ -93,7 +93,10 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
                 </span>
             </div>
             <div style={{display: 'flex'}}>
-                <button type="button" ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button>
+                <div ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>
+                    <i className="fa-solid fa-paintbrush"></i>
+                </div>
+                {/* <button type="button" ref={colorChangeButtonRef} onClick={handleChangeColorButtonClicked}>Change Color</button> */}
                 {showColorPicker && <ColorPicker onChange={handleTempColorChange} onConfirm={handleColorConfirm} onCancel={handleColorCancel} colorPickerStyle={colorPickerStyle} currentColor={tempColor}/>}
             </div>
         </div>

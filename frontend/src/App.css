@@ -311,3 +311,8 @@ input {
 .collapse-right-icon:hover {
   background-color: #eee;
 }
+
+.editColorButton {
+  display: flex;
+  gap: 9px;
+}
