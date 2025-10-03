@@ -22,6 +22,12 @@
 
 ---
 
+## Upcoming Features
+- Sort and filter problems by name, difficulty, or date solved.
+- Search for problems.
+
+---
+
 ## Screenshots/Videos
 
 ### Video Demo
@@ -54,10 +60,6 @@ YouTube Video - https://youtu.be/wiBr2n4KQrE
 
 
 ---
-
-## Upcoming Features
-- Sort and filter problems by name, difficulty, or date solved.
-- Search for problems.
 
 ## Getting Started
 
