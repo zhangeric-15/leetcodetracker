@@ -41,6 +41,9 @@ async function addProblem(req, res) {
 
 async function getAllProblems(req, res) {
     const user = req.user;
+    // Grab the sort QUERY parameter from the URL
+    // If there is no sort param, default to 'date_desc'
+    const sort = req.query.sort || "date_desc";
     try {
         // TODO: Potentially remove. May not need to populate 'topics' field
         // const problems = await Problem.find({user}).populate('topics');
