@@ -21,6 +21,11 @@ const problemSchema = new mongoose.Schema({
         enum: ['EASY', 'MEDIUM', 'HARD', 'UNKNOWN'],
         default: 'UNKNOWN'
     },
+    // TODO: Utilize later
+    // difficultyRank: {
+    //     type: Number,
+    //     default: 1  // 1=Easy, 2=Medium, 3=Hard
+    // },
     understanding: {
         type: String,
         enum: ['UNDERSTAND', 'MEDIUM', 'NEEDS_REVIEW', 'TO_DO'],
