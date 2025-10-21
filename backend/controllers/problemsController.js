@@ -48,8 +48,12 @@ async function getAllProblems(req, res) {
     // Grab the sort QUERY parameter from the URL
     // If there is no sort param, set default sorting to 'date_desc'
     const sort = req.query.sort || "date_desc";
+    const sortOption = sortOptions[sort];
+    if (!sortOption) {
+        return res.status(400).json({error: `Invalid sort query parameter: ${sort}. Valid values are ${Object.keys(sortOptions)}`})
+    }
     try {
-        const problems = await Problem.find({user}).sort(sortOptions[sort]);
+        const problems = await Problem.find({user}).sort(sortOption);
         return res.status(200).json(problems);
     } catch(error) {
         return res.status(500).json({error: error.message});
