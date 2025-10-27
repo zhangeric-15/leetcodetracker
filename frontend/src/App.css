@@ -316,3 +316,9 @@ input {
   display: flex;
   gap: 9px;
 }
+
+.sortableCategory {
+  display: flex; 
+  gap: 9px;
+  cursor: pointer;
+}

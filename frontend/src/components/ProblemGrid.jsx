@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useProblemContext } from '../../hooks/useProblemContext';
 import ProblemContent from './ProblemContent';
 
 function ProblemGrid({onEditProblem}) {
     const {problems, dispatch} = useProblemContext();
+    const [dateDecreasing, setDateDecreasing] = useState(true);
     useEffect(() => {
         const fetchProblems = async () => {
             try {
@@ -24,6 +25,12 @@ function ProblemGrid({onEditProblem}) {
         fetchProblems();      
     }, [])
 
+    function handleDateSort() {
+        // Need to use functional form of setState (setDateDecreasing)
+        setDateDecreasing(prev => !prev);
+        
+    }
+
     // rowNum is utilized to determine which row will have a white background
     let rowNum = 0;
     let problemContentArr = [];
@@ -39,7 +46,10 @@ function ProblemGrid({onEditProblem}) {
                 <div>Title</div>
                 <div>Difficulty</div>
                 <div>Understanding</div>
-                <div>Topics</div>
+                <div className='sortableCategory' onClick={handleDateSort}>
+                    Topics
+                    {dateDecreasing && <i className="fa-solid fa-caret-up"></i>}
+                </div>
                 <div>Last Solved</div>
             </div>
             {problemContentArr}
