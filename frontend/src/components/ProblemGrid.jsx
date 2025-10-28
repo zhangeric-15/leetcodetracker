@@ -7,8 +7,9 @@ function ProblemGrid({onEditProblem}) {
     const [dateDecreasing, setDateDecreasing] = useState(true);
     useEffect(() => {
         const fetchProblems = async () => {
+            const dateSortOption = dateDecreasing ? 'date_desc' : 'date_asce';
             try {
-                const response = await fetch('http://localhost:5001/api/problems/getAllProblems', {
+                const response = await fetch(`http://localhost:5001/api/problems/getAllProblems?sort=${dateSortOption}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -23,12 +24,12 @@ function ProblemGrid({onEditProblem}) {
             }
         }
         fetchProblems();      
-    }, [])
+    }, [dateDecreasing])
 
     function handleDateSort() {
         // Need to use functional form of setState (setDateDecreasing)
         setDateDecreasing(prev => !prev);
-        
+
     }
 
     // rowNum is utilized to determine which row will have a white background
@@ -46,11 +47,13 @@ function ProblemGrid({onEditProblem}) {
                 <div>Title</div>
                 <div>Difficulty</div>
                 <div>Understanding</div>
-                <div className='sortableCategory' onClick={handleDateSort}>
+                <div>
                     Topics
+                </div>
+                <div className='sortableCategory' onClick={handleDateSort}>
+                    Last Solved
                     {dateDecreasing && <i className="fa-solid fa-caret-up"></i>}
                 </div>
-                <div>Last Solved</div>
             </div>
             {problemContentArr}
         </div>
