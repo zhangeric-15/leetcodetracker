@@ -118,7 +118,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
 
     async function addProblem(newProblem) {
         try {
-            const response = await fetch('http://localhost:5001/api/problems/addProblem', {
+            const response = await fetch('http://localhost:5001/api/problems', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

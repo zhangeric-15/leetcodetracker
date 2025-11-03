@@ -12,8 +12,8 @@ problemRouter.use(authJwtCookie);
 // sortKey can be:
 // 1) date_desc
 // 2) date_incre
-problemRouter.get('/getAllProblems', getAllProblems);
-problemRouter.post('/addProblem', addProblem);
+problemRouter.get('/', getAllProblems);
+problemRouter.post('/', addProblem);
 problemRouter.delete('/:problemId', deleteProblem)
 problemRouter.patch('/:problemId', editProblem);
 

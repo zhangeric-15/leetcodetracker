@@ -9,7 +9,7 @@ function ProblemGrid({onEditProblem}) {
         const fetchProblems = async () => {
             const dateSortOption = dateDecreasing ? 'date_desc' : 'date_asce';
             try {
-                const response = await fetch(`http://localhost:5001/api/problems/getAllProblems?sort=${dateSortOption}`, {
+                const response = await fetch(`http://localhost:5001/api/problems/?sort=${dateSortOption}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
