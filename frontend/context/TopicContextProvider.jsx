@@ -52,7 +52,7 @@ export function TopicContextProvider({ children }) {
                 return;
             }
             try {
-                const response = await fetch('http://localhost:5001/api/topics/getAllTopics', {
+                const response = await fetch('http://localhost:5001/api/topics', {
                     credentials: 'include'
                 });
                 const topicsArr = await response.json();

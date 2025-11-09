@@ -6,8 +6,8 @@ const topicRouter = express.Router();
 //topicRouter.use(authJwtBearer);
 topicRouter.use(authJwtCookie);
 
-topicRouter.post('/addTopic', addTopic)
-topicRouter.get('/getAllTopics', getAllTopics);
+topicRouter.post('/', addTopic)
+topicRouter.get('/', getAllTopics);
 topicRouter.delete('/:topicId', deleteTopic)
 topicRouter.patch('/:topicId', updateTopicColor)
 

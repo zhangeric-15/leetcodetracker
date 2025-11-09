@@ -31,7 +31,7 @@ function TopicCreateOption({ value, onCreateTopic, onColorPickClicked }) {
         // Handle sending POST request to Add Topic 
         const newTopic = { topicName: value, color };
         try {
-            const response = await fetch('http://localhost:5001/api/topics/addTopic', {
+            const response = await fetch('http://localhost:5001/api/topics', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
