@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 
 export const ProblemContext = createContext();
 
@@ -8,12 +8,13 @@ function problemReducer(state, action) {
         // action.payload = new problem object
         case 'ADD_PROBLEM':
             return {
-                problems: [...state.problems, action.payload]
+                problems: sortProblems(action.sortOption, [...state.problems, action.payload])
             };
         // action.payload = updated problem object
         case 'UPDATE_PROBLEM':
+            const updatedProblems = state.problems.map(problem => problem._id === action.payload._id ? action.payload : problem)
             return {
-                problems: state.problems.map(problem => problem._id === action.payload._id ? action.payload : problem)
+                problems: sortProblems(action.sortOption, updatedProblems)
             };
         // action.payload = an array of problems
         case 'SET_PROBLEMS':
@@ -43,12 +44,30 @@ function problemReducer(state, action) {
     }
 }
 
+/* Sort problems by date ascending */
+function sortByDateAsce(problems) {
+    problems.sort((a, b) => new Date(a.date) - new Date(b.date));
+    return problems;
+}
+/* Sort problems by date descending */
+function sortByDateDesc(problems) {
+    problems.sort((a, b) => new Date(b.date) - new Date(a.date));
+    return problems;
+}
+/* Sort problems given a sortOption */
+function sortProblems(sortOption, problems) {
+    if (sortOption == "date_asce") {
+        return sortByDateAsce(problems);
+    } 
+    return sortByDateDesc(problems);
+}
 
 export function ProblemContextProvider({ children }) {
     const [state, dispatch] = useReducer(problemReducer, {problems: null});
+    const [sortOption, setSortOption] = useState("date_desc");
     return (
         // value will be {problems, dispatch}
-        <ProblemContext.Provider value={{...state, dispatch}}>
+        <ProblemContext.Provider value={{...state, dispatch, sortOption, setSortOption}}>
             { children }
         </ProblemContext.Provider>
     )

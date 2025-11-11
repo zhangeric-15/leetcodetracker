@@ -3,13 +3,11 @@ import { useProblemContext } from '../../hooks/useProblemContext';
 import ProblemContent from './ProblemContent';
 
 function ProblemGrid({onEditProblem}) {
-    const {problems, dispatch} = useProblemContext();
-    const [dateDecreasing, setDateDecreasing] = useState(true);
+    const {problems, dispatch, sortOption, setSortOption} = useProblemContext();
     useEffect(() => {
         const fetchProblems = async () => {
-            const dateSortOption = dateDecreasing ? 'date_desc' : 'date_asce';
             try {
-                const response = await fetch(`http://localhost:5001/api/problems/?sort=${dateSortOption}`, {
+                const response = await fetch(`http://localhost:5001/api/problems/?sort=${sortOption}`, {
                     method: 'GET',
                     credentials: 'include'
                 });
@@ -24,11 +22,14 @@ function ProblemGrid({onEditProblem}) {
             }
         }
         fetchProblems();      
-    }, [dateDecreasing])
+    }, [sortOption])
 
     function handleDateSort() {
-        // Need to use functional form of setState (setDateDecreasing)
-        setDateDecreasing(prev => !prev);
+        if (sortOption === "date_desc") {
+            setSortOption("date_asce");
+        } else {
+            setSortOption("date_desc");
+        }
 
     }
 
@@ -52,7 +53,7 @@ function ProblemGrid({onEditProblem}) {
                 </div>
                 <div className='sortableCategory' onClick={handleDateSort}>
                     Last Solved
-                    {dateDecreasing && <i className="fa-solid fa-caret-up"></i>}
+                    {sortOption === "date_desc" && <i className="fa-solid fa-caret-up"></i>}
                 </div>
             </div>
             {problemContentArr}

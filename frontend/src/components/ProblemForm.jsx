@@ -10,7 +10,7 @@ import { useProblemContext } from "../../hooks/useProblemContext";
 
 function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
     const {topics} = useTopicContext();
-    const {problems, dispatch: problemDispatch} = useProblemContext();
+    const {problems, dispatch: problemDispatch, sortOption} = useProblemContext();
     const [errors, setErrors] = useState({});
     const [problemName, setProblemName] = useState(() => {
         if (problem !== null) {
@@ -130,7 +130,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             if (!response.ok) {
                 throw new Error(`Unable to add problem due to response status: ${response.status} with message: ${problemData.error}`);
             }
-            problemDispatch({type: 'ADD_PROBLEM', payload: problemData});
+            problemDispatch({type: 'ADD_PROBLEM', payload: problemData, sortOption});
 
 
         } catch(error) {
@@ -152,7 +152,7 @@ function ProblemForm({ problem = null, onSubmit, onCancel, editMode }) {
             if (!response.ok) {
                 throw new Error(`Unable to update problem due to response status: ${response.status} with message: ${problemData.error}`);
             }
-            problemDispatch({type: 'UPDATE_PROBLEM', payload: problemData});
+            problemDispatch({type: 'UPDATE_PROBLEM', payload: problemData, sortOption});
 
 
         } catch(error) {
