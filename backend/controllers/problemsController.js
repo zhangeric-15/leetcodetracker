@@ -43,8 +43,10 @@ async function getAllProblems(req, res) {
     const user = req.user;
     const sortOptions = {
         "date_asce" : {date: 1},
-        "date_desc" : {date: -1}
-    }
+        "date_desc" : {date: -1},
+        "name_asce" : {problemName: 1},
+        "name_desc" : {problemName: -1}
+    };
     // Grab the sort QUERY parameter from the URL
     // If there is no sort param, set default sorting to 'date_desc'
     const sort = req.query.sort || "date_desc";
@@ -81,6 +83,7 @@ async function editProblem(req, res) {
 
     try {
         // Need to make sure ProblemId is in a valid format.
+        // By valid format, this checks if value is a valid MongoDB ObjectId
         if (!mongoose.Types.ObjectId.isValid(problemId)){
                 return res.status(400).json({error: "Problem Update Error - Not a valid ID for problemId"});
         }
